@@ -1,0 +1,27 @@
+{
+  "eval_version": "1.0",
+  "golden_policy": "Repository-authored deterministic SVG fixtures are contract-level visual goldens, not production illustrations or generator quality benchmarks.",
+  "cases": [
+    {"id":"VG-001","kind":"positive","style":"modern-flat@2.1","flow":"simple","asset_id":"modern-flat-growth","assertions":["flat geometric construction","volumetric gradient","brand red remains focal accent","single readable hero"]},
+    {"id":"VG-002","kind":"positive","style":"modern-flat@2.1","flow":"complex","asset_id":"modern-flat-mobility","assertions":["layered context","directional color depth","clean silhouettes","red below dominant visual weight"]},
+    {"id":"VG-003","kind":"positive","style":"modern-flat@2.1","flow":"local-correction","asset_id":"modern-flat-security","assertions":["composition remains locked","security metaphor remains readable","red correction is local","non-photorealistic finish"]},
+    {"id":"VG-004","kind":"positive","style":"silver-gold@3.1","flow":"simple","asset_id":"silver-gold-trophy","assertions":["silver remains dominant","gold is a limited focal accent","matte or satin reading","one hero object"]},
+    {"id":"VG-005","kind":"positive","style":"silver-gold@3.1","flow":"complex","asset_id":"silver-gold-shield","assertions":["technological geometry","controlled gold contour","dark neutral background","no jewelry decoration"]},
+    {"id":"VG-006","kind":"positive","style":"silver-gold@3.1","flow":"local-correction","asset_id":"silver-gold-coin","assertions":["material correction preserves geometry","silver exceeds gold","no mirror chrome","controlled highlight"]},
+    {"id":"VG-007","kind":"positive","style":"obsidian-gold@1.0","flow":"simple","asset_id":"obsidian-gold-vault","assertions":["pure black background","one isolated object","matte obsidian-black base","gold remains below 25 percent"]},
+    {"id":"VG-008","kind":"positive","style":"obsidian-gold@1.0","flow":"complex","asset_id":"obsidian-gold-key","assertions":["icon-readable silhouette","no environment","controlled frontal light metaphor","black and gold only"]},
+    {"id":"VG-009","kind":"positive","style":"obsidian-gold@1.0","flow":"local-correction","asset_id":"obsidian-gold-crown","assertions":["background lock remains #000000","gold correction is local","no floor shadow","single object remains readable"]},
+    {"id":"VA-001","kind":"negative","asset_id":"anti-modern-flat-red-overload","diagnostic_code":"PALETTE_ERROR","assertions":["red exceeds 10 percent visual weight","candidate is rejected"]},
+    {"id":"VA-002","kind":"negative","asset_id":"anti-silver-gold-chrome","diagnostic_code":"MATERIAL_ERROR","assertions":["gold dominates","chrome highlight violates matte or satin contract"]},
+    {"id":"VA-003","kind":"negative","asset_id":"anti-obsidian-wrong-background","diagnostic_code":"BACKGROUND_ERROR","assertions":["background is not #000000","stone texture and floor shadow are visible"]},
+    {"id":"VA-004","kind":"negative","asset_id":"anti-generated-logo","diagnostic_code":"LOGO_ERROR","assertions":["pseudo-logo is generated","critical defect overrides score"]},
+    {"id":"VA-005","kind":"negative","asset_id":"anti-composition-drift","diagnostic_code":"COMPOSITION_DRIFT","assertions":["multiple objects compete","approved hierarchy and safe space are lost"]},
+    {"id":"VR-001","kind":"negative","flow":"delivery","diagnostic_code":"DELIVERY_MISSING","assertions":["tool success without visible image fails","output manifest remains invalid"]}
+  ],
+  "repeatability": {
+    "attempts": 3,
+    "minimum_style_passes": 2,
+    "required_preservation": ["semantic locks","identity locks","style primary invariants"],
+    "selection_evidence_required": true
+  }
+}
