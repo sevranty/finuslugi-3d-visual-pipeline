@@ -1,13 +1,13 @@
 ---
 name: finuslugi-3d-visual-pipeline
-description: Analyze visual references and design briefs, compile a versioned Finuslugi 3D style specification, generate or edit a new image through the available image generation tool, diagnose deviations, and deliver a validated final asset. Use when the user provides one or more references and asks for a new Finuslugi-style 3D illustration, a controlled restyle, a composition-preserving variation, or a local correction of an existing generation.
+description: Analyze visual references and design briefs, compile a versioned Finuslugi 3D style specification, route execution through a capability-checked image runtime, generate or edit a new image, diagnose deviations, and deliver a validated final asset. Use when the user provides one or more references and asks for a new Finuslugi-style 3D illustration, a controlled restyle, a composition-preserving variation, or a local correction of an existing generation.
 ---
 
 # Finuslugi 3D Visual Pipeline
 
 ## Scope
 
-Use this skill to transform an idea or reference into a new, style-consistent Finuslugi image. The skill owns analysis, specification, prompt planning, iteration control, QA, and delivery. The installed image-generation tool owns the actual generation or edit execution.
+Use this skill to transform an idea or reference into a new, style-consistent Finuslugi image. The skill owns analysis, specification, runtime routing, prompt planning, iteration control, QA, and delivery. The selected image-generation runtime owns the actual generation or edit execution.
 
 Do not treat a reference as a complete brief. Do not jump directly from an image to one long prompt.
 
@@ -45,22 +45,29 @@ Do not treat a reference as a complete brief. Do not jump directly from an image
    - Use one prompt for simple scenes.
    - Use staged prompts for complex scenes.
    - Follow `references/prompt-architecture.md` and `references/generation-sequence.md`.
-9. **Run the pre-generation gate.**
-   - Reject contradictions, undefined reference roles, missing locks, missing output dimensions, and style-rule violations.
-   - Do not continue through an undocumented capability downgrade.
-10. **Generate or edit through the available image-generation tool.**
+9. **Route through an explicit runtime profile.**
+   - Derive mandatory capabilities from the requested mode, reference roles, locks, and output contract.
+   - Read `references/runtime-capabilities.md` and validate the active profile against `assets/schemas/runtime-capabilities.schema.json` when file-based validation is available.
+   - Select the route using `references/runtime-routing.md`.
+   - When a mandatory capability is absent or unknown, follow `references/runtime-fallbacks.md`; never degrade silently.
+   - Record profile ID, adapter ID, actual tool/model, requested mode, selected mode, fallback decision, and limitations before execution.
+10. **Run the pre-generation gate.**
+    - Reject contradictions, undefined reference roles, missing locks, missing output dimensions, style-rule violations, and unsupported mandatory capabilities.
+    - Do not continue through an undocumented capability downgrade.
+11. **Generate or edit through the selected runtime.**
     - Preserve the declared locks.
     - Do not ask the generator to invent the communication concept.
-    - Record the actual tool, model, execution mode, and limitations.
-11. **Inspect the result visually.**
+    - Execute only the selected route.
+12. **Inspect the result visually.**
     - Check meaning, geometry, composition, style, brand, and technical quality.
     - Apply the gates in `references/quality-gates.md`.
-12. **Iterate diagnostically.**
+13. **Iterate diagnostically.**
     - Select a stable code from `references/diagnostic-codes.md`.
     - Preserve approved parts.
     - Change one scene layer or one tightly related group per iteration.
+    - Re-evaluate runtime capabilities when the requested correction mode changes.
     - Follow `references/iteration-rules.md`.
-13. **Finalize and deliver.**
+14. **Finalize and deliver.**
     - Add exact text and logos outside the generative pass whenever possible.
     - Use the correct Finuslugi logo asset for the background.
     - Confirm that the final image is visible in the user-facing response.
@@ -76,12 +83,15 @@ Do not treat a reference as a complete brief. Do not jump directly from an image
 - Do not use subjective correction language such as “make it better” or “make it expensive”. Translate it into a measurable visual defect.
 - Do not repair composition, geometry, material, lighting, reflections, and detail in one request.
 - Do not generate a Finuslugi logo. Use the supplied brand asset.
+- Do not claim a capability that is unknown or unsupported.
+- Do not replace edit, mask edit, identity preservation, transparency, or upscale with a lower-fidelity route without disclosure and approval.
+- Tool success without a visible image is `DELIVERY_MISSING`.
 - A high weighted score does not override a critical defect.
 - Do not claim completion until the final image has passed QA and is delivered to the user.
 
 ## Final response minimum
 
-The user-facing result must contain the final image. Supporting text may state the selected style pack, transformation mode, and whether any non-critical limitations remain. Never return an empty final response after successful generation.
+The user-facing result must contain the final image. Supporting text may state the selected style pack, transformation mode, runtime route, fallback, and non-critical limitations. Never return an empty final response after successful generation.
 
 ## Canonical references
 
@@ -90,6 +100,9 @@ The user-facing result must contain the final image. Supporting text may state t
 - Scene contract: `references/scene-specification.md`
 - Style selection: `references/style-selection.md`
 - Prompt structure: `references/prompt-architecture.md`
+- Runtime capabilities: `references/runtime-capabilities.md`
+- Runtime routing: `references/runtime-routing.md`
+- Runtime fallbacks: `references/runtime-fallbacks.md`
 - Diagnostic codes: `references/diagnostic-codes.md`
 - Quality gates: `references/quality-gates.md`
 - Delivery contract: `references/output-delivery.md`
