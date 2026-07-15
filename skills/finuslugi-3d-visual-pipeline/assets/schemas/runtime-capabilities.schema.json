@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sevranty/finuslugi-3d-visual-pipeline/schemas/runtime-capabilities.schema.json",
+  "title": "Image Runtime Capability Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile_version",
+    "profile_id",
+    "adapter_id",
+    "tool_family",
+    "model_id",
+    "observed_at",
+    "capabilities",
+    "limits",
+    "limitations",
+    "evidence"
+  ],
+  "properties": {
+    "profile_version": {"const": "1.0"},
+    "profile_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*@[0-9]+$"},
+    "adapter_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*@[0-9]+$"},
+    "tool_family": {"type": "string", "minLength": 1},
+    "model_id": {"type": "string", "minLength": 1},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generate",
+        "reference-conditioned",
+        "edit",
+        "mask-edit",
+        "multi-reference",
+        "identity-preservation",
+        "transparent-output",
+        "upscale",
+        "exact-dimensions",
+        "deliver",
+        "seed-control"
+      ],
+      "properties": {
+        "generate": {"enum": ["supported", "unsupported", "unknown"]},
+        "reference-conditioned": {"enum": ["supported", "unsupported", "unknown"]},
+        "edit": {"enum": ["supported", "unsupported", "unknown"]},
+        "mask-edit": {"enum": ["supported", "unsupported", "unknown"]},
+        "multi-reference": {"enum": ["supported", "unsupported", "unknown"]},
+        "identity-preservation": {"enum": ["supported", "unsupported", "unknown"]},
+        "transparent-output": {"enum": ["supported", "unsupported", "unknown"]},
+        "upscale": {"enum": ["supported", "unsupported", "unknown"]},
+        "exact-dimensions": {"enum": ["supported", "unsupported", "unknown"]},
+        "deliver": {"enum": ["supported", "unsupported", "unknown"]},
+        "seed-control": {"enum": ["supported", "unsupported", "unknown"]}
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_references", "max_width_px", "max_height_px"],
+      "properties": {
+        "max_references": {"type": "integer", "minimum": 0},
+        "max_width_px": {"type": "integer", "minimum": 0},
+        "max_height_px": {"type": "integer", "minimum": 0}
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "verified_by"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "verified_by": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
