@@ -1,31 +1,105 @@
 {
-  "manifest_version": "1.0",
-  "assets": [
+  "registry_version": "2.0",
+  "updated_at": "2026-07-15T12:35:00Z",
+  "policy": {
+    "default_rights_status": "blocked",
+    "unregistered_binary_policy": "reject",
+    "generated_logo_policy": "reject",
+    "exploratory_as_style_source": "reject",
+    "public_golden_requires": [
+      "approval_status=approved",
+      "rights_status=cleared",
+      "public_distribution_status=approved"
+    ]
+  },
+  "collections": [
     {
-      "asset_id": "finuslugi-logo-base-v1",
-      "path": "assets/finuslugi-base.png",
-      "type": "brand-logo",
-      "variant": "base",
-      "allowed_backgrounds": ["white", "light"],
-      "allowed_roles": ["post-production-logo", "repository-documentation"],
-      "approval_status": "project-supplied",
-      "public_distribution_status": "pending-rights-review",
-      "owner": "Finuslugi / rights holder",
-      "source_note": "Provided as a project asset. Do not redraw or regenerate.",
-      "sha256": "bec5c6e658f0a9831ad833b630237ccd39791a79edfb15e35ca9cc7e836520f9"
+      "collection_id": "brand-assets",
+      "path": "assets/brand/",
+      "purpose": "Canonical brand assets and usage rules.",
+      "admission_status": "controlled",
+      "production_eligible": true
     },
     {
-      "asset_id": "finuslugi-logo-inverted-v1",
+      "collection_id": "anchors-modern-flat",
+      "path": "assets/anchors/modern-flat/",
+      "purpose": "Approved Modern Flat regression anchors only.",
+      "admission_status": "review-required",
+      "production_eligible": true
+    },
+    {
+      "collection_id": "anchors-silver-gold",
+      "path": "assets/anchors/silver-gold/",
+      "purpose": "Approved Silver-Gold regression anchors only.",
+      "admission_status": "review-required",
+      "production_eligible": true
+    },
+    {
+      "collection_id": "anchors-obsidian-gold",
+      "path": "assets/anchors/obsidian-gold/",
+      "purpose": "Approved Obsidian Gold regression anchors only.",
+      "admission_status": "review-required",
+      "production_eligible": true
+    },
+    {
+      "collection_id": "anti-patterns",
+      "path": "assets/anti-patterns/",
+      "purpose": "Rejected fixtures linked to diagnostic codes.",
+      "admission_status": "review-required",
+      "production_eligible": false
+    },
+    {
+      "collection_id": "exploratory",
+      "path": "assets/exploratory/",
+      "purpose": "Research references that are never canonical style sources.",
+      "admission_status": "quarantine",
+      "production_eligible": false
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "finuslugi-logo-base",
+      "asset_version": "1.0.0",
+      "path": "assets/finuslugi-base.png",
+      "collection_id": "brand-assets",
+      "type": "brand-logo",
+      "variant": "base",
+      "lifecycle_status": "active",
+      "approval_status": "approved",
+      "rights_status": "cleared",
+      "public_distribution_status": "approved",
+      "license_scope": "Project repository use; no trademark rights granted to downstream users.",
+      "source": "Owner-supplied project asset Finuslugi_base_4x.png.",
+      "owner": "Finuslugi / rights holder",
+      "allowed_backgrounds": ["white", "light"],
+      "allowed_roles": ["post-production-logo", "repository-documentation", "plugin-interface"],
+      "prohibited_roles": ["generative-reference", "generated-logo", "style-anchor"],
+      "source_note": "Use the original file without redraw, distortion, recoloring, or generative reconstruction.",
+      "sha256": "bec5c6e658f0a9831ad833b630237ccd39791a79edfb15e35ca9cc7e836520f9",
+      "supersedes": null,
+      "deprecated_at": null
+    },
+    {
+      "asset_id": "finuslugi-logo-inverted",
+      "asset_version": "1.0.0",
       "path": "assets/finuslugi-inverted.png",
+      "collection_id": "brand-assets",
       "type": "brand-logo",
       "variant": "inverted",
-      "allowed_backgrounds": ["red", "dark"],
-      "allowed_roles": ["post-production-logo", "repository-documentation"],
-      "approval_status": "project-supplied",
-      "public_distribution_status": "pending-rights-review",
+      "lifecycle_status": "active",
+      "approval_status": "approved",
+      "rights_status": "cleared",
+      "public_distribution_status": "approved",
+      "license_scope": "Project repository use; no trademark rights granted to downstream users.",
+      "source": "Owner-supplied project asset Finuslugi_inverted_4x.png.",
       "owner": "Finuslugi / rights holder",
-      "source_note": "Provided as a project asset. Do not redraw or regenerate.",
-      "sha256": "daf24226f671f6c63effa6a64933c59a6310add90f196d9d88b3e045c1bfa0d6"
+      "allowed_backgrounds": ["red", "dark"],
+      "allowed_roles": ["post-production-logo", "repository-documentation", "plugin-interface"],
+      "prohibited_roles": ["generative-reference", "generated-logo", "style-anchor"],
+      "source_note": "Use the original file without redraw, distortion, recoloring, or generative reconstruction.",
+      "sha256": "daf24226f671f6c63effa6a64933c59a6310add90f196d9d88b3e045c1bfa0d6",
+      "supersedes": null,
+      "deprecated_at": null
     }
   ]
 }
