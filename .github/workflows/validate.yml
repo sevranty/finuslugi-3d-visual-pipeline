@@ -13,10 +13,12 @@ on:
       - ".github/workflows/validate.yml"
       - "assets/**"
       - "docs/**"
+      - "release/**"
       - "skills/**"
       - "validation/**"
       - "AGENTS.md"
       - "CHANGELOG.md"
+      - "RELEASE_CHECKLIST.md"
       - "LICENSE"
       - "README.md"
   workflow_dispatch:
@@ -66,6 +68,15 @@ jobs:
           python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_visual_regression.py \
             --report validation/runtime/visual-report.json
 
+      - name: Run installation smoke test
+        run: |
+          python3 skills/finuslugi-3d-visual-pipeline/scripts/smoke_test_installation.py
+
+      - name: Run release validator
+        run: |
+          python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_release.py \
+            --report validation/runtime/release-report.json
+
       - name: Publish success status
         if: success()
         env:
@@ -76,7 +87,7 @@ jobs:
             "repos/${{ github.repository }}/statuses/$SOURCE_SHA" \
             -f state=success \
             -f context=f3d/validation \
-            -f description="Repository, runtime, asset, and visual validators passed"
+            -f description="All repository and release validators passed"
 
       - name: Publish failure status
         if: failure()
@@ -88,7 +99,7 @@ jobs:
             "repos/${{ github.repository }}/statuses/$SOURCE_SHA" \
             -f state=failure \
             -f context=f3d/validation \
-            -f description="Repository, runtime, asset, or visual validator failed"
+            -f description="Repository or release validation failed"
 
       - name: Upload validation evidence
         if: always()
@@ -100,4 +111,5 @@ jobs:
             validation/runtime/runtime-report.json
             validation/runtime/asset-report.json
             validation/runtime/visual-report.json
+            validation/runtime/release-report.json
           if-no-files-found: error
