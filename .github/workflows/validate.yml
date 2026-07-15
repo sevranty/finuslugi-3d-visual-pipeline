@@ -3,7 +3,7 @@ name: Validate repository
 on:
   push:
     branches:
-      - fix/f3d-005-validation-evidence
+      - main
   pull_request:
     paths:
       - ".codex-plugin/**"
@@ -11,6 +11,7 @@ on:
       - "assets/**"
       - "docs/**"
       - "skills/**"
+      - "validation/**"
       - "AGENTS.md"
       - "CHANGELOG.md"
       - "LICENSE"
