@@ -1,0 +1,44 @@
+name: Validate repository
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - ".codex-plugin/**"
+      - ".github/workflows/validate.yml"
+      - "assets/**"
+      - "docs/**"
+      - "skills/**"
+      - "validation/**"
+      - "AGENTS.md"
+      - "CHANGELOG.md"
+      - "LICENSE"
+      - "README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact source commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Run repository validator
+        run: |
+          python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_repository.py \
+            --report validation/runtime/report.json
+
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f3d-validation-${{ github.event.pull_request.head.sha || github.sha }}
+          path: validation/runtime/report.json
+          if-no-files-found: error
