@@ -1,0 +1,31 @@
+{
+  "manifest_version": "1.0",
+  "assets": [
+    {
+      "asset_id": "finuslugi-logo-base-v1",
+      "path": "assets/finuslugi-base.png",
+      "type": "brand-logo",
+      "variant": "base",
+      "allowed_backgrounds": ["white", "light"],
+      "allowed_roles": ["post-production-logo", "repository-documentation"],
+      "approval_status": "project-supplied",
+      "public_distribution_status": "pending-rights-review",
+      "owner": "Finuslugi / rights holder",
+      "source_note": "Provided as a project asset. Do not redraw or regenerate.",
+      "sha256": "3f71b4045b611d87fde5bbfe1a69540e1b5bee912c13262fbd280eed8b89b27c"
+    },
+    {
+      "asset_id": "finuslugi-logo-inverted-v1",
+      "path": "assets/finuslugi-inverted.png",
+      "type": "brand-logo",
+      "variant": "inverted",
+      "allowed_backgrounds": ["red", "dark"],
+      "allowed_roles": ["post-production-logo", "repository-documentation"],
+      "approval_status": "project-supplied",
+      "public_distribution_status": "pending-rights-review",
+      "owner": "Finuslugi / rights holder",
+      "source_note": "Provided as a project asset. Do not redraw or regenerate.",
+      "sha256": "0f2e66d3d91703eee410d078b7b7db01ec60751bdbf2ab442e7caf295fce96ee"
+    }
+  ]
+}
