@@ -40,9 +40,9 @@
 
 ## Publication
 
-- [x] Release PR merged to `main`.
+- [x] Release PR is prepared and owner-authorized for exact-HEAD review and merge.
 - [ ] Annotated tag `v0.2.0` created on the release merge commit.
 - [ ] GitHub Release `v0.2.0` published from checked-in release notes.
 - [ ] Installation smoke test repeated from immutable tag.
 
-The final three publication items require a GitHub API surface that can create tags and Release objects. They are not represented as completed until that operation is actually available and executed.
+The three post-merge publication items require a GitHub API surface that can create tags and Release objects. They remain incomplete until that operation is actually available and executed.
