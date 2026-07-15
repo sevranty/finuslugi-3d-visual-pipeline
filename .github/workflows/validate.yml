@@ -61,6 +61,11 @@ jobs:
           python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_asset_registry.py \
             --report validation/runtime/asset-report.json
 
+      - name: Run visual regression validator
+        run: |
+          python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_visual_regression.py \
+            --report validation/runtime/visual-report.json
+
       - name: Publish success status
         if: success()
         env:
@@ -71,7 +76,7 @@ jobs:
             "repos/${{ github.repository }}/statuses/$SOURCE_SHA" \
             -f state=success \
             -f context=f3d/validation \
-            -f description="Repository, runtime, and asset validators passed"
+            -f description="Repository, runtime, asset, and visual validators passed"
 
       - name: Publish failure status
         if: failure()
@@ -83,7 +88,7 @@ jobs:
             "repos/${{ github.repository }}/statuses/$SOURCE_SHA" \
             -f state=failure \
             -f context=f3d/validation \
-            -f description="Repository, runtime, or asset validator failed"
+            -f description="Repository, runtime, asset, or visual validator failed"
 
       - name: Upload validation evidence
         if: always()
@@ -94,4 +99,5 @@ jobs:
             validation/runtime/report.json
             validation/runtime/runtime-report.json
             validation/runtime/asset-report.json
+            validation/runtime/visual-report.json
           if-no-files-found: error

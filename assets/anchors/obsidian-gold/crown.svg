@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Obsidian Gold crown regression fixture">
+  <title>Obsidian Gold crown regression fixture</title>
+  <rect width="512" height="512" fill="#000000"/>
+  <defs><linearGradient id="obs" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#262626"/><stop offset="1" stop-color="#090909"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFD700"/><stop offset="1" stop-color="#C7A256"/></linearGradient></defs>
+  <path d="M106 176 L188 252 L256 122 L324 252 L406 176 L370 374 H142 Z" fill="url(#obs)"/>
+  <path d="M142 334 H370 L360 388 H152 Z" fill="#111111" stroke="url(#gold)" stroke-width="16"/>
+  <circle cx="188" cy="252" r="15" fill="#C7A256"/><circle cx="256" cy="122" r="17" fill="#FFD700"/><circle cx="324" cy="252" r="15" fill="#C7A256"/>
+</svg>

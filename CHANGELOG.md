@@ -15,12 +15,17 @@ All notable changes to this repository are documented here.
 - Append-only asset manifest history.
 - Canonical asset governance reference, registry schema, validator, and behavior cases.
 - Controlled collections for brand assets, approved anchors, anti-patterns, and exploratory quarantine.
+- Nine repository-authored deterministic SVG golden fixtures: three per style pack.
+- Five diagnostic anti-pattern SVG fixtures plus delivery regression.
+- Visual cases covering simple, complex, local-correction, and delivery flows.
+- Visual regression validator and immutable run manifest with style, flow, diagnostic, repeatability, rights, and checksum evidence.
 
 ### Changed
 
 - Output manifest version `1.1` records runtime profile, adapter, requested and selected modes, required capabilities, fallback decision, and limitations.
-- Canonical skill now routes through capability and governed-asset gates before execution.
+- Canonical skill routes through capability and governed-asset gates before execution.
 - Owner-supplied Finuslugi logos are explicitly approved for this public project repository while granting no downstream trademark rights.
+- Asset registry now includes public, rights-cleared regression fixtures that are explicitly prohibited as production finals and generative references.
 
 ### Governance
 
@@ -30,6 +35,7 @@ All notable changes to this repository are documented here.
 - Unregistered visual files and generated logos are rejected.
 - Exploratory references cannot become canonical style sources implicitly.
 - Public golden assets require approval, cleared rights, and public-distribution approval.
+- Regression goldens are contract fixtures, not production illustration or model-quality benchmarks.
 
 ## 0.1.0 - 2026-07-15
 
@@ -57,11 +63,9 @@ Status: draft architecture and canonical-skill baseline.
 - Exact text and Finuslugi logos are post-generation assets by default.
 - Code licensing and brand-asset rights are separated.
 - Silver-Gold and Obsidian Gold remain controlled-rollout specifications.
-- A critical visual defect overrides the weighted QA score.
+- A critical defect overrides the weighted QA score.
 - Tool success without visible user delivery is not completion.
 
 ### Known limitations
 
-- No approved visual golden set is included yet.
-- Visual regression evidence has not been produced yet.
 - Installation smoke testing and first release gates remain pending.

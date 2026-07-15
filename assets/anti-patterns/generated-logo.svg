@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Anti-pattern generated logo">
+  <title>Anti-pattern generated logo</title>
+  <rect width="512" height="512" fill="#FFFFFF"/>
+  <rect x="70" y="158" width="372" height="196" rx="52" fill="#FF0508"/>
+  <text x="256" y="272" text-anchor="middle" font-family="sans-serif" font-size="48" font-weight="700" fill="#FFFFFF">FINU$LUGI?</text>
+  <path d="M118 310 C180 270 212 350 278 300 C330 260 360 310 410 278" fill="none" stroke="#FFFFFF" stroke-width="10"/>
+</svg>
