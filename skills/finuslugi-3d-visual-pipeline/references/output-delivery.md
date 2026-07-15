@@ -21,19 +21,26 @@ Do not redraw, restyle, distort, or generate the logo.
 
 ## Output manifest
 
-Record:
+Use output manifest version `1.1` and record:
 
-- asset ID and version;
-- Scene Specification version;
+- asset ID, version, and candidate ID;
+- Scene Specification version and SHA-256;
 - style pack ID and version;
 - transformation mode;
 - source reference IDs and roles;
-- final dimensions and format;
-- QA score;
-- critical-defect result;
-- final candidate ID;
-- generation or edit tool used;
-- delivery confirmation.
+- runtime profile ID and adapter ID;
+- actual tool and model;
+- requested and selected execution modes;
+- mandatory capabilities used for route selection;
+- every fallback decision, approval, reason, and risk;
+- known runtime limitations;
+- final dimensions, format, background mode, path, and SHA-256;
+- QA score, critical defects, and diagnostic codes;
+- visible delivery confirmation and timestamp.
+
+Machine contract: `../assets/schemas/output-manifest.schema.json`.
+
+A requested/selected mode mismatch without a fallback record invalidates the manifest. A completed manifest always includes `deliver` in required capabilities.
 
 ## User-facing delivery gate
 
@@ -45,4 +52,4 @@ Before completing the response, verify:
 - the final image is attached or rendered in the chat;
 - the response is not empty.
 
-A tool success message without a visible final image is not delivery.
+A tool success message without a visible final image is not delivery. Emit `DELIVERY_MISSING`, retry only the delivery path, and keep the task incomplete until the image is visible.
