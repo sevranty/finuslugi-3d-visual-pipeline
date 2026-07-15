@@ -7,7 +7,7 @@ description: Analyze visual references and design briefs, compile a versioned Fi
 
 ## Scope
 
-Use this skill to transform an idea or reference into a new, style-consistent Finuslugi image. The skill owns analysis, specification, runtime routing, prompt planning, iteration control, QA, and delivery. The selected image-generation runtime owns the actual generation or edit execution.
+Use this skill to transform an idea or reference into a new, style-consistent Finuslugi image. The skill owns analysis, specification, asset governance, runtime routing, prompt planning, iteration control, QA, and delivery. The selected image-generation runtime owns the actual generation or edit execution.
 
 Do not treat a reference as a complete brief. Do not jump directly from an image to one long prompt.
 
@@ -27,49 +27,54 @@ Do not treat a reference as a complete brief. Do not jump directly from an image
    - Use one approved Finuslugi creative as the style reference when available.
    - Use no more than two additional references unless the user explicitly accepts higher ambiguity.
    - Read `references/reference-analysis.md`.
-5. **Lock the approved decisions.**
+5. **Validate governed assets.**
+   - Read `references/asset-governance.md`.
+   - Use only active manifest entries whose approval, rights, distribution, and role states permit the requested use.
+   - Treat exploratory references as quarantine, never as implicit style sources.
+   - Reject unregistered visual files and AI-generated logos.
+6. **Lock the approved decisions.**
    - Record semantic, identity, composition, and style locks.
    - State what may change and what must not change.
-6. **Build the Scene Specification.**
+7. **Build the Scene Specification.**
    - Use the complete contract in `references/scene-specification.md`.
    - Validate structured instances against `assets/schemas/scene-spec.schema.json` when the environment supports file-based validation.
    - The Scene Specification, not the final prompt, is the source of truth.
-7. **Select exactly one style pack and version.**
+8. **Select exactly one style pack and version.**
    - Apply the selection rules in `references/style-selection.md`.
    - Modern Flat: `references/style-modern-flat.md`.
    - Silver-Gold: `references/style-silver-gold.md`.
    - Obsidian Gold: `references/style-obsidian-gold.md`.
    - Preserve controlled-rollout status and any review requirement.
    - Never combine style invariants unless a documented derivative style has been approved.
-8. **Plan the prompt sequence.**
+9. **Plan the prompt sequence.**
    - Use one prompt for simple scenes.
    - Use staged prompts for complex scenes.
    - Follow `references/prompt-architecture.md` and `references/generation-sequence.md`.
-9. **Route through an explicit runtime profile.**
-   - Derive mandatory capabilities from the requested mode, reference roles, locks, and output contract.
-   - Read `references/runtime-capabilities.md` and validate the active profile against `assets/schemas/runtime-capabilities.schema.json` when file-based validation is available.
-   - Select the route using `references/runtime-routing.md`.
-   - When a mandatory capability is absent or unknown, follow `references/runtime-fallbacks.md`; never degrade silently.
-   - Record profile ID, adapter ID, actual tool/model, requested mode, selected mode, fallback decision, and limitations before execution.
-10. **Run the pre-generation gate.**
-    - Reject contradictions, undefined reference roles, missing locks, missing output dimensions, style-rule violations, and unsupported mandatory capabilities.
-    - Do not continue through an undocumented capability downgrade.
-11. **Generate or edit through the selected runtime.**
+10. **Route through an explicit runtime profile.**
+    - Derive mandatory capabilities from the requested mode, reference roles, locks, and output contract.
+    - Read `references/runtime-capabilities.md` and validate the active profile against `assets/schemas/runtime-capabilities.schema.json` when file-based validation is available.
+    - Select the route using `references/runtime-routing.md`.
+    - When a mandatory capability is absent or unknown, follow `references/runtime-fallbacks.md`; never degrade silently.
+    - Record profile ID, adapter ID, actual tool/model, requested mode, selected mode, fallback decision, and limitations before execution.
+11. **Run the pre-generation gate.**
+    - Reject contradictions, undefined reference roles, missing locks, missing output dimensions, style-rule violations, unsupported mandatory capabilities, and disallowed assets.
+    - Do not continue through an undocumented capability or rights downgrade.
+12. **Generate or edit through the selected runtime.**
     - Preserve the declared locks.
     - Do not ask the generator to invent the communication concept.
     - Execute only the selected route.
-12. **Inspect the result visually.**
+13. **Inspect the result visually.**
     - Check meaning, geometry, composition, style, brand, and technical quality.
     - Apply the gates in `references/quality-gates.md`.
-13. **Iterate diagnostically.**
+14. **Iterate diagnostically.**
     - Select a stable code from `references/diagnostic-codes.md`.
     - Preserve approved parts.
     - Change one scene layer or one tightly related group per iteration.
     - Re-evaluate runtime capabilities when the requested correction mode changes.
     - Follow `references/iteration-rules.md`.
-14. **Finalize and deliver.**
+15. **Finalize and deliver.**
     - Add exact text and logos outside the generative pass whenever possible.
-    - Use the correct Finuslugi logo asset for the background.
+    - Use the correct active Finuslugi logo asset for the background.
     - Confirm that the final image is visible in the user-facing response.
     - Validate a structured record against `assets/schemas/output-manifest.schema.json` when file-based output is available.
     - Follow `references/output-delivery.md`.
@@ -82,7 +87,8 @@ Do not treat a reference as a complete brief. Do not jump directly from an image
 - Do not fully copy a reference unless the user explicitly requests a permitted edit of that exact image.
 - Do not use subjective correction language such as “make it better” or “make it expensive”. Translate it into a measurable visual defect.
 - Do not repair composition, geometry, material, lighting, reflections, and detail in one request.
-- Do not generate a Finuslugi logo. Use the supplied brand asset.
+- Do not use an asset that is unregistered, inactive, unapproved, rights-blocked, distribution-blocked, or assigned a prohibited role.
+- Do not generate a Finuslugi logo. Use the supplied governed brand asset.
 - Do not claim a capability that is unknown or unsupported.
 - Do not replace edit, mask edit, identity preservation, transparency, or upscale with a lower-fidelity route without disclosure and approval.
 - Tool success without a visible image is `DELIVERY_MISSING`.
@@ -97,6 +103,7 @@ The user-facing result must contain the final image. Supporting text may state t
 
 - Workflow state machine: `references/workflow.md`
 - Reference roles and locks: `references/reference-analysis.md`
+- Asset governance: `references/asset-governance.md`
 - Scene contract: `references/scene-specification.md`
 - Style selection: `references/style-selection.md`
 - Prompt structure: `references/prompt-architecture.md`
