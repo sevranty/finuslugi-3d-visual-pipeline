@@ -14,6 +14,7 @@ This repository stores normalized production rules and source metadata. It does 
 | `DEC-F3D-006` | GitHub Issue #6 and owner execution instruction | 2026-07-15 | Tool-agnostic capability vocabulary, runtime routing, explicit fallback rules, execution provenance, and delivery failure semantics. |
 | `DEC-F3D-007` | GitHub Issue #7 and owner execution instruction | 2026-07-15 | Stable asset identities, rights and approval states, collection boundaries, checksum policy, history, and public golden eligibility. |
 | `DEC-F3D-004` | GitHub Issue #4 and owner execution instruction | 2026-07-15 | Deterministic public regression goldens, anti-pattern diagnostics, flow coverage, repeatability evidence, and golden replacement policy. |
+| `DEC-F3D-008` | GitHub Issue #8 and owner execution instruction | 2026-07-15 | Plugin installation, repository-scoped fallback, semantic versioning, compatibility, smoke testing, public repository scanning, release validation, and publication lifecycle. |
 
 ## Canonical destination map
 
@@ -35,6 +36,11 @@ This repository stores normalized production rules and source metadata. It does 
 | visual golden and anti-pattern cases | `../evals/visual-cases.json` |
 | visual regression evidence | `../evals/results/` |
 | deterministic visual validation | `../scripts/validate_visual_regression.py` |
+| installation and removal | `installation.md`, `../scripts/smoke_test_installation.py` |
+| compatibility | `compatibility.md` |
+| semantic versioning, rollback, deprecation, and publication | `versioning-and-release.md`, `../../../RELEASE_CHECKLIST.md` |
+| release notes and validation manifest | `../../../release/0.2.0/RELEASE_NOTES.md`, `../../../release/0.2.0/validation-manifest.json` |
+| deterministic release validation | `../scripts/validate_release.py` |
 | diagnostic correction | `diagnostic-codes.md`, `iteration-rules.md` |
 | weighted visual QA | `quality-gates.md` |
 | final delivery and execution manifest | `output-delivery.md`, `../assets/schemas/output-manifest.schema.json` |
@@ -60,6 +66,9 @@ This repository stores normalized production rules and source metadata. It does 
 - Public golden assets require approved status, cleared rights, and public distribution approval.
 - Repository SVG goldens test contracts and invariants; they do not claim production-art or model-quality equivalence.
 - Every anti-pattern is linked to one primary diagnostic code.
+- Plugin installation and repository-scoped skill fallback are separately validated.
+- Published tags are immutable; rollback creates a new patch release rather than moving a tag.
+- Tag and GitHub Release publication remain distinct from source release preparation and merge.
 - Tool success and user-visible delivery are separate states.
 - Tool success without a visible image is `DELIVERY_MISSING`.
 - A critical defect overrides the weighted QA score.
@@ -84,5 +93,5 @@ When a source document or owner decision changes behavior:
 4. increment the style, schema, registry, or plugin version when required;
 5. update `CHANGELOG.md`;
 6. add or update an eval case;
-7. run the repository, runtime, asset, and visual regression validators;
+7. run the repository, runtime, asset, visual regression, smoke, and release validators;
 8. keep this source map synchronized.
