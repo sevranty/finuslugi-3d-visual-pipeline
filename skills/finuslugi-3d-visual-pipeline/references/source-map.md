@@ -11,6 +11,7 @@ This repository stores normalized production rules and source metadata. It does 
 | `SRC-STYLE-MF-001` | `FDS [visual-style] Стиль Modern Flat v2.1 (2026-02-24).docx` | v2.1, 2026-02-24 | Modern Flat geometry, light, palette, composition, safe areas, prohibitions, prompt markers, and QA. |
 | `SRC-STYLE-SG-001` | `FDS [visual-style] Стиль Silver-Gold v3.1 (2026-02-24).docx` | v3.1, 2026-02-24 | Silver/Gold semantics and ratio, matte/satin materials, controlled reflections, light, prohibitions, governance, and QA. |
 | `SRC-STYLE-OG-001` | `FDS [visual-style] Стиль Obsidian Gold v1.0 (2026-02-24).docx` | v1.0, 2026-02-24 | Obsidian/Gold tokens, isolated-object composition, pure-black background, prompt requirements, prohibitions, conflict resolutions, and QA. |
+| `DEC-F3D-006` | GitHub Issue #6 and owner execution instruction | 2026-07-15 | Tool-agnostic capability vocabulary, runtime routing, explicit fallback rules, execution provenance, and delivery failure semantics. |
 
 ## Canonical destination map
 
@@ -22,9 +23,13 @@ This repository stores normalized production rules and source metadata. It does 
 | transformation modes | `transformation-modes.md` |
 | Scene Specification | `scene-specification.md`, `../assets/schemas/scene-spec.schema.json` |
 | prompt compilation and staged execution | `prompt-architecture.md`, `generation-sequence.md` |
+| runtime capability vocabulary and profiles | `runtime-capabilities.md`, `../assets/schemas/runtime-capabilities.schema.json` |
+| runtime route selection and reference mapping | `runtime-routing.md` |
+| runtime fallbacks and stop rules | `runtime-fallbacks.md` |
+| runtime behavior regression | `../evals/runtime-cases.json` |
 | diagnostic correction | `diagnostic-codes.md`, `iteration-rules.md` |
 | weighted visual QA | `quality-gates.md` |
-| final delivery and manifest | `output-delivery.md`, `../assets/schemas/output-manifest.schema.json` |
+| final delivery and execution manifest | `output-delivery.md`, `../assets/schemas/output-manifest.schema.json` |
 | style selection and governance status | `style-selection.md` |
 | Modern Flat | `style-modern-flat.md` |
 | Silver-Gold | `style-silver-gold.md` |
@@ -39,7 +44,11 @@ This repository stores normalized production rules and source metadata. It does 
 - Style details are separated into independently versioned style packs.
 - Visual-architecture rollout status is preserved even when a detailed style document is technically complete.
 - Exact text and Finuslugi logos are post-generation assets by default.
+- Tool names do not imply capabilities; every route uses an observed capability profile.
+- `unknown` is treated as unsupported for mandatory capabilities.
+- Requested and selected execution modes may differ only through a recorded fallback.
 - Tool success and user-visible delivery are separate states.
+- Tool success without a visible image is `DELIVERY_MISSING`.
 - A critical defect overrides the weighted QA score.
 
 ## Traceability rule
@@ -54,13 +63,13 @@ A normalization decision that changes behavior must also update the relevant eva
 
 ## Version policy
 
-When a source document changes:
+When a source document or owner decision changes behavior:
 
-1. record the new source version or date;
+1. record the new source version, date, or decision ID;
 2. update only the affected canonical file;
 3. add a conflict-log entry when sources disagree;
-4. increment the style or plugin version when behavior changes;
+4. increment the style, schema, or plugin version when required;
 5. update `CHANGELOG.md`;
 6. add or update an eval case;
-7. run the repository validator and visual regression scope;
+7. run the repository validator and applicable visual regression scope;
 8. keep this source map synchronized.
