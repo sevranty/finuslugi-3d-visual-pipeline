@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 ## Unreleased
 
+No unreleased changes.
+
+## 0.2.0 - 2026-07-15
+
+First governed public release candidate.
+
 ### Added
 
 - Tool-agnostic runtime capability vocabulary and versioned capability profiles.
@@ -19,13 +25,17 @@ All notable changes to this repository are documented here.
 - Five diagnostic anti-pattern SVG fixtures plus delivery regression.
 - Visual cases covering simple, complex, local-correction, and delivery flows.
 - Visual regression validator and immutable run manifest with style, flow, diagnostic, repeatability, rights, and checksum evidence.
+- Plugin and repository-scoped installation instructions.
+- Compatibility matrix, semantic versioning, rollback, deprecation, release checklist, and release notes.
+- Installation smoke test and release validator.
 
 ### Changed
 
 - Output manifest version `1.1` records runtime profile, adapter, requested and selected modes, required capabilities, fallback decision, and limitations.
 - Canonical skill routes through capability and governed-asset gates before execution.
 - Owner-supplied Finuslugi logos are explicitly approved for this public project repository while granting no downstream trademark rights.
-- Asset registry now includes public, rights-cleared regression fixtures that are explicitly prohibited as production finals and generative references.
+- Asset registry includes public, rights-cleared regression fixtures that are explicitly prohibited as production finals and generative references.
+- Plugin metadata version is `0.2.0`.
 
 ### Governance
 
@@ -36,6 +46,12 @@ All notable changes to this repository are documented here.
 - Exploratory references cannot become canonical style sources implicitly.
 - Public golden assets require approval, cleared rights, and public-distribution approval.
 - Regression goldens are contract fixtures, not production illustration or model-quality benchmarks.
+
+### Known limitations
+
+- Generator capabilities remain environment-dependent and must be observed at runtime.
+- Exact identity preservation is not guaranteed.
+- Tag and GitHub Release publication require a post-merge GitHub API operation.
 
 ## 0.1.0 - 2026-07-15
 
@@ -65,7 +81,3 @@ Status: draft architecture and canonical-skill baseline.
 - Silver-Gold and Obsidian Gold remain controlled-rollout specifications.
 - A critical defect overrides the weighted QA score.
 - Tool success without visible user delivery is not completion.
-
-### Known limitations
-
-- Installation smoke testing and first release gates remain pending.
