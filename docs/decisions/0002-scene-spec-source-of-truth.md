@@ -23,7 +23,7 @@ The specification records:
 - preserve, change, and exclude constraints;
 - output dimensions and post-production policy.
 
-The machine contract is `assets/schemas/scene-spec.schema.json`.
+The machine contract is `../../skills/finuslugi-3d-visual-pipeline/assets/schemas/scene-spec.schema.json`.
 
 ## Consequences
 
