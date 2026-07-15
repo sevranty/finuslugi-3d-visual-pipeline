@@ -1,0 +1,40 @@
+{
+  "name": "finuslugi-3d-visual-pipeline",
+  "version": "0.1.0",
+  "description": "Controlled reference-to-image production pipeline for Finuslugi 3D visual assets.",
+  "author": {
+    "name": "Vsevolod Rymar",
+    "url": "https://github.com/sevranty"
+  },
+  "homepage": "https://github.com/sevranty/finuslugi-3d-visual-pipeline",
+  "repository": "https://github.com/sevranty/finuslugi-3d-visual-pipeline",
+  "license": "MIT",
+  "keywords": [
+    "finuslugi",
+    "design",
+    "image-generation",
+    "3d-illustration",
+    "reference-to-image",
+    "visual-pipeline"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Finuslugi 3D Visual Pipeline",
+    "shortDescription": "Create controlled Finuslugi 3D visuals",
+    "longDescription": "Analyze a visual brief and references, compile a versioned style specification, generate or edit an image, diagnose deviations, and deliver a validated Finuslugi 3D asset.",
+    "developerName": "Vsevolod Rymar",
+    "category": "Design",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/sevranty/finuslugi-3d-visual-pipeline",
+    "defaultPrompt": [
+      "Use the Finuslugi 3D visual pipeline to turn my reference into a new style-consistent image."
+    ],
+    "brandColor": "#FF0508",
+    "composerIcon": "./assets/finuslugi-inverted.png",
+    "logo": "./assets/finuslugi-base.png",
+    "screenshots": []
+  }
+}

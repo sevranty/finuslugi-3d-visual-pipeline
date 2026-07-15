@@ -1,0 +1,133 @@
+{
+  "eval_version": "1.0",
+  "cases": [
+    {
+      "id": "EV-001",
+      "name": "Modern Flat brand adaptation",
+      "kind": "positive",
+      "transformation_mode": "brand-adaptation",
+      "style": "modern-flat@2.1",
+      "input": "One product reference and one approved Modern Flat style reference.",
+      "expected": [
+        "reference roles are explicit",
+        "Scene Specification is complete",
+        "red accent is limited to 10 percent visual weight",
+        "safe areas are preserved",
+        "photorealism is rejected"
+      ]
+    },
+    {
+      "id": "EV-002",
+      "name": "Silver-Gold premium object",
+      "kind": "positive",
+      "transformation_mode": "style-transfer",
+      "style": "silver-gold@3.1",
+      "input": "One geometry reference and one approved Silver-Gold anchor.",
+      "expected": [
+        "silver target is 70-85 percent",
+        "gold target is 15-30 percent",
+        "surface is matte or satin",
+        "chrome and jewelry styling are excluded"
+      ]
+    },
+    {
+      "id": "EV-003",
+      "name": "Obsidian Gold isolated icon",
+      "kind": "positive",
+      "transformation_mode": "brand-adaptation",
+      "style": "obsidian-gold@1.0",
+      "input": "One vault geometry reference and one approved Obsidian Gold style anchor.",
+      "expected": [
+        "one isolated object",
+        "gold is no more than 25 percent",
+        "background is pure black",
+        "prompt ends with The background is black.",
+        "stone texture and HDR are excluded"
+      ]
+    },
+    {
+      "id": "EV-004",
+      "name": "Complex staged generation",
+      "kind": "positive",
+      "transformation_mode": "reference-synthesis",
+      "style": "modern-flat@2.1",
+      "input": "Style reference, subject reference, and composition sketch for a multi-layer scene.",
+      "expected": [
+        "composition is approved before material refinement",
+        "geometry is approved before lighting refinement",
+        "each iteration changes one scene layer",
+        "approved locks are preserved"
+      ]
+    },
+    {
+      "id": "EV-005",
+      "name": "Local material correction",
+      "kind": "positive",
+      "transformation_mode": "local-correction",
+      "style": "silver-gold@3.1",
+      "input": "Existing candidate has correct composition but chrome-like material.",
+      "expected": [
+        "primary diagnostic code is MATERIAL_ERROR",
+        "composition and geometry are listed as preserved",
+        "only surface roughness and reflection behavior change"
+      ]
+    },
+    {
+      "id": "EV-006",
+      "name": "Missing usable reference",
+      "kind": "negative",
+      "input": "User asks to edit an image that is not present.",
+      "expected": [
+        "generation is not started",
+        "the user is asked to upload or identify the image",
+        "no invented reference ID is created"
+      ]
+    },
+    {
+      "id": "EV-007",
+      "name": "Conflicting reference roles",
+      "kind": "negative",
+      "input": "Two style references define incompatible materials and backgrounds without priority.",
+      "expected": [
+        "pre-generation gate fails",
+        "the conflict is stated explicitly",
+        "one primary style reference must be selected"
+      ]
+    },
+    {
+      "id": "EV-008",
+      "name": "Delivery regression",
+      "kind": "negative",
+      "input": "Generation tool reports success but no image is visible in the final response.",
+      "expected": [
+        "diagnostic code DELIVERY_MISSING is emitted",
+        "output manifest is invalid",
+        "the task is not reported as complete"
+      ]
+    },
+    {
+      "id": "EV-009",
+      "name": "Forbidden Obsidian environment",
+      "kind": "negative",
+      "style": "obsidian-gold@1.0",
+      "input": "Prompt adds a luxury office, reflective floor, and graphite gradient background.",
+      "expected": [
+        "STYLE_DRIFT and BACKGROUND_ERROR are emitted",
+        "environment and floor are removed",
+        "background is restored to #000000",
+        "the correction preserves the object silhouette"
+      ]
+    },
+    {
+      "id": "EV-010",
+      "name": "Generated logo rejection",
+      "kind": "negative",
+      "input": "Candidate includes an AI-generated Finuslugi logo.",
+      "expected": [
+        "LOGO_ERROR is a critical defect",
+        "candidate is rejected regardless of score",
+        "approved logo asset is added after generation"
+      ]
+    }
+  ]
+}
