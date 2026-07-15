@@ -1,0 +1,105 @@
+{
+  "eval_version": "1.0",
+  "cases": [
+    {
+      "id": "RT-001",
+      "name": "ChatGPT reference-conditioned generation",
+      "kind": "positive",
+      "profile": "chatgpt-image-generation@1",
+      "requested_mode": "reference-conditioned",
+      "required_capabilities": ["generate", "reference-conditioned", "deliver"],
+      "expected": [
+        "route is selected only after usable conversation references are confirmed",
+        "actual tool and model are recorded",
+        "final image is visible in the user-facing response"
+      ]
+    },
+    {
+      "id": "RT-002",
+      "name": "ChatGPT exact image edit",
+      "kind": "positive",
+      "profile": "chatgpt-image-generation@1",
+      "requested_mode": "edit",
+      "required_capabilities": ["edit", "deliver"],
+      "expected": [
+        "the editable source is present in the current conversation",
+        "approved locks are preserved",
+        "selected mode remains edit"
+      ]
+    },
+    {
+      "id": "RT-003",
+      "name": "Nano Banana-style multi-reference synthesis",
+      "kind": "positive",
+      "profile": "nano-banana-style@1",
+      "requested_mode": "reference-conditioned",
+      "required_capabilities": ["generate", "reference-conditioned", "multi-reference", "deliver"],
+      "expected": [
+        "reference roles are mapped explicitly",
+        "external generation success is not treated as delivery",
+        "delivery is verified by the orchestration layer"
+      ]
+    },
+    {
+      "id": "RT-004",
+      "name": "Missing mask edit stops local correction",
+      "kind": "negative",
+      "profile": "chatgpt-image-generation@1",
+      "requested_mode": "mask-edit",
+      "required_capabilities": ["edit", "mask-edit", "deliver"],
+      "expected": [
+        "unknown mask-edit is treated as unsupported",
+        "full-scene regeneration is not selected silently",
+        "the run stops or requests explicit degradation approval"
+      ]
+    },
+    {
+      "id": "RT-005",
+      "name": "Missing multi-reference uses disclosed staged route",
+      "kind": "negative",
+      "requested_mode": "reference-conditioned",
+      "required_capabilities": ["multi-reference"],
+      "expected": [
+        "staging is allowed only for non-overlapping reference roles",
+        "increased drift risk is recorded",
+        "identity or composition loss causes a stop"
+      ]
+    },
+    {
+      "id": "RT-006",
+      "name": "Missing upscale preserves native asset",
+      "kind": "negative",
+      "requested_mode": "upscale",
+      "required_capabilities": ["upscale", "deliver"],
+      "expected": [
+        "native validated output is retained",
+        "interpolation is not mislabeled as generative upscale",
+        "mandatory higher resolution causes a stop or approved external route"
+      ]
+    },
+    {
+      "id": "RT-007",
+      "name": "Delivery capability regression",
+      "kind": "negative",
+      "requested_mode": "generate",
+      "required_capabilities": ["generate", "deliver"],
+      "expected": [
+        "tool success does not complete the task",
+        "DELIVERY_MISSING is emitted",
+        "output manifest remains invalid until the image is visible"
+      ]
+    },
+    {
+      "id": "RT-008",
+      "name": "Hidden route degradation rejected",
+      "kind": "negative",
+      "requested_mode": "edit",
+      "required_capabilities": ["edit", "deliver"],
+      "expected": [
+        "requested and selected mode mismatch requires a fallback record",
+        "transformation mode changes require user approval",
+        "unknown capabilities cannot be asserted as supported"
+      ]
+    }
+  ]
+}
