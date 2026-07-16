@@ -62,6 +62,10 @@ python3 -m unittest discover -s skills/3d-visual-pipeline/tests -p "test_*.py"
 
 All runtime validators use only the Python standard library.
 
+## Governance
+
+Runtime behavior is governed by `skills/3d-visual-pipeline/SKILL.md`. Local task intake and 3DP project constants are in `TASK.md`; the WebFactoryOS orchestration boundary is in `docs/decisions/0002-web-factory-os-orchestration.md`. WebFactoryOS is an orchestration source only, and relations never grant write access.
+
 ## License and rights
 
 MIT covers repository code and original documentation. Visual assets in `assets/` are repository-authored unless their manifest entry states otherwise. No trademark or third-party usage right is implied.

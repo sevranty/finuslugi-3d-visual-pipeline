@@ -1,0 +1,201 @@
+name: 3DP execution task
+description: Repository-local execution issue for 3d-visual-pipeline work.
+title: "🔗 3DP#░░ → 🔀PR#░░ • "
+labels: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for repository-local execution work. WebFactoryOS may be cited as an orchestration source, but it grants no write access and is not a runtime, build, test, release, workflow, package, API, or deployment dependency.
+
+  - type: textarea
+    id: task_context
+    attributes:
+      label: TASK_CONTEXT
+      description: Fixed 3DP identity plus task-specific routing values.
+      value: |
+        PROJECT_ID: 3D_VISUAL_PIPELINE
+        SHORT_ID: 3DP
+        TASK_ID: auto
+        TASK_PROFILE: execution
+        ACTION:
+        SOURCE_URL: not set
+        REFERENCE_URLS:
+          -
+        REPOSITORY_URL: https://github.com/sevranty/3d-visual-pipeline
+        TASKS_URL: https://github.com/sevranty/3d-visual-pipeline/issues
+        TARGET_URL: not set
+        BRANCH: not-created
+        OUTPUT:
+        handoff_mode: delta-only
+    validations:
+      required: true
+
+  - type: textarea
+    id: orchestration_task
+    attributes:
+      label: ORCHESTRATION_TASK
+      description: Optional WebFactoryOS orchestration source. It does not grant write access.
+      value: |
+        not set
+    validations:
+      required: true
+
+  - type: textarea
+    id: inputs
+    attributes:
+      label: INPUTS
+      description: Base SHA, source materials, linked issues or PRs, and local context needed for execution.
+      value: |
+        Base SHA:
+        Project: 3d-visual-pipeline
+        PROJECT_ID: 3D_VISUAL_PIPELINE
+        SHORT_ID: 3DP
+        Primary chat:
+        Notes:
+    validations:
+      required: true
+
+  - type: textarea
+    id: detailed_action
+    attributes:
+      label: DETAILED_ACTION
+      description: Ordered local execution steps.
+      placeholder: |
+        1. Read current main and local instructions.
+        2. Make the smallest scoped change.
+        3. Run exact-HEAD validation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: write_scope
+    attributes:
+      label: WRITE_SCOPE
+      description: Repository, paths, and metadata that may be changed.
+      value: |
+        - repository:sevranty/3d-visual-pipeline
+        - path:
+        - metadata:issue/auto
+    validations:
+      required: true
+
+  - type: textarea
+    id: protected_resources
+    attributes:
+      label: PROTECTED_RESOURCES
+      description: Files, systems, or environments that must remain unchanged unless explicitly listed in WRITE_SCOPE.
+      value: |
+        - plugin and skill runtime behavior
+        - skills/3d-visual-pipeline/**
+        - assets/**
+        - release/**
+        - historical commits and tags
+        - repository settings, secrets and environments
+        - production, deployment and DNS
+        - repository:sevranty/web-factory-os
+    validations:
+      required: true
+
+  - type: textarea
+    id: done_when
+    attributes:
+      label: DONE_WHEN
+      description: Concrete completion condition.
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependency_minimization
+    attributes:
+      label: DEPENDENCY_MINIMIZATION
+      description: Confirm no WFO runtime, package, workflow, API, or deployment dependency is introduced.
+      value: |
+        - No submodule, package, reusable workflow or API dependency on WebFactoryOS.
+        - No copy of WebFactoryOS project, relation or emoji registries.
+        - No validator import from another repository.
+        - WebFactoryOS references are links or issue relations only.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: ACCEPTANCE_CRITERIA
+      description: Repository-local completion checks.
+      value: |
+        - [ ] Scope matches WRITE_SCOPE.
+        - [ ] Protected resources remain unchanged unless explicitly listed in WRITE_SCOPE.
+        - [ ] Active metadata uses SHORT_ID 3DP.
+        - [ ] No prior project identifier is introduced as active metadata.
+        - [ ] No WebFactoryOS code, workflow, package, network, deployment or runtime dependency exists.
+        - [ ] Exact-HEAD review is complete.
+    validations:
+      required: true
+
+  - type: textarea
+    id: local_checks
+    attributes:
+      label: LOCAL_CHECKS
+      description: Commands expected before final review.
+      value: |
+        python3 skills/3d-visual-pipeline/scripts/validate_repository.py
+        python3 skills/3d-visual-pipeline/scripts/validate_runtime_contract.py
+        python3 skills/3d-visual-pipeline/scripts/validate_asset_registry.py
+        python3 skills/3d-visual-pipeline/scripts/validate_visual_regression.py
+        python3 skills/3d-visual-pipeline/scripts/smoke_test_installation.py
+        python3 skills/3d-visual-pipeline/scripts/validate_release.py
+        python3 skills/3d-visual-pipeline/scripts/validate_debrand.py
+        python3 -m unittest discover -s skills/3d-visual-pipeline/tests -p "test_*.py"
+        git diff --check
+        git diff --name-only <BASE_SHA>...HEAD
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: EVIDENCE
+      description: Base/final HEAD, changed-file allowlist, issue form fields, checks, dependency proof, review notes, PR lifecycle, relation, and trace.
+      value: |
+        Base HEAD:
+        Final HEAD:
+        Changed files:
+        Issue Form fields:
+        Validators/tests:
+        No-new-dependency proof:
+        Diff review:
+        PR lifecycle:
+        Relation:
+        TRACE v1:
+    validations:
+      required: true
+
+  - type: textarea
+    id: read_scope
+    attributes:
+      label: READ_SCOPE
+      value: |
+        read_scope:
+          - current_issue
+          - local_repository_instructions
+          - linked_task_capsule
+          - canonical_agent_rules
+        handoff_mode: delta-only
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: SAFETY
+      options:
+        - label: Work is limited to repository:sevranty/3d-visual-pipeline.
+          required: true
+        - label: Relation does not grant write access.
+          required: true
+        - label: WebFactoryOS is orchestration source only, not runtime dependency.
+          required: true
+        - label: Protected resources remain unchanged unless explicitly listed in WRITE_SCOPE.
+          required: true
