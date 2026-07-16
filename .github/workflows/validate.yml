@@ -6,6 +6,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: 3dp-validation-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   statuses: write
@@ -14,30 +18,26 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout exact source commit
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-      - name: Run repository validator
-        run: python3 skills/3d-visual-pipeline/scripts/validate_repository.py --report validation/runtime/repository.json
-      - name: Run runtime contract validator
-        run: python3 skills/3d-visual-pipeline/scripts/validate_runtime_contract.py --report validation/runtime/runtime.json
-      - name: Run asset registry validator
-        run: python3 skills/3d-visual-pipeline/scripts/validate_asset_registry.py --report validation/runtime/assets.json
-      - name: Run visual regression validator
-        run: python3 skills/3d-visual-pipeline/scripts/validate_visual_regression.py --report validation/runtime/visual.json
-      - name: Run installation smoke test
-        run: python3 skills/3d-visual-pipeline/scripts/smoke_test_installation.py
-      - name: Run release validator
-        run: python3 skills/3d-visual-pipeline/scripts/validate_release.py --report validation/runtime/release.json
-      - name: Run debrand validator
-        run: python3 skills/3d-visual-pipeline/scripts/validate_debrand.py --report validation/runtime/debrand.json
-      - name: Run unit tests
-        run: python3 -m unittest discover -s skills/3d-visual-pipeline/tests -p "test_*.py"
+
+      - name: Run complete validation
+        run: python3 skills/3d-visual-pipeline/scripts/validate_all.py --report-dir validation/runtime
+
       - name: Publish success status
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api --method POST "repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha || github.sha }}" -f state=success -f context=3dp/validation -f description="All repository and release validators passed"
+
+      - name: Publish failure status
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha || github.sha }}" -f state=failure -f context=3dp/validation -f description="Repository or release validation failed"
+
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
