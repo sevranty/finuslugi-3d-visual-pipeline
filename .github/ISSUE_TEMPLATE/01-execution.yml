@@ -22,6 +22,29 @@ body:
     validations:
       required: true
   - type: input
+    id: source_url
+    attributes:
+      label: SOURCE_URL
+      description: Source URL or not set
+      value: not set
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: REFERENCE_URLS
+      description: Issues, PRs and canonical sources
+    validations:
+      required: true
+  - type: input
+    id: target_url
+    attributes:
+      label: TARGET_URL
+      description: Target URL or not set
+      value: not set
+    validations:
+      required: true
+  - type: input
     id: exact_base
     attributes:
       label: Exact base SHA
@@ -31,15 +54,8 @@ body:
   - type: input
     id: branch
     attributes:
-      label: Branch
+      label: BRANCH
       description: One task branch
-    validations:
-      required: true
-  - type: textarea
-    id: references
-    attributes:
-      label: Reference URLs
-      description: Issues, PRs and canonical sources
     validations:
       required: true
   - type: textarea
@@ -64,6 +80,20 @@ body:
     attributes:
       label: PROTECTED_RESOURCES
       description: Resources that must not change
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Ordered dependencies and parallel work
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks
+      description: Known failure modes and stop conditions
     validations:
       required: true
   - type: textarea
