@@ -1,23 +1,18 @@
-# Release Checklist — 0.2.0
+# Release Checklist — 1.0.0
 
-## Architecture and behavior
+## Identity
 
-- [x] F3D#1 architecture merged.
-- [x] F3D#2 canonical skill merged.
-- [x] F3D#3 style packs and source traceability merged.
-- [x] F3D#5 deterministic repository validation merged.
-- [x] F3D#6 runtime capability contract merged.
-- [x] F3D#7 governed asset registry and rights states merged.
-- [x] F3D#4 golden set and visual regression merged.
+- [x] Repository, plugin, skill, and commands use `3d-visual-pipeline`.
+- [x] Skill path is `skills/3d-visual-pipeline`.
+- [x] Plugin version is `1.0.0`.
+- [x] Validation context is `dvp/validation`.
 
-## Packaging
+## Debrand
 
-- [x] Plugin manifest version is `0.2.0`.
-- [x] Plugin manifest resolves `./skills/`.
-- [x] Canonical `SKILL.md` is discoverable.
-- [x] Brand assets referenced by plugin metadata exist and match checksums.
-- [x] Installation documentation covers plugin and repository-scoped skill modes.
-- [x] Compatibility, rollback, and deprecation policies are documented.
+- [x] Active tracked tree contains no blocked legacy identifiers, URLs, filenames, asset IDs, or fixed palette marker.
+- [x] Legacy logo binaries are absent from the active tracked tree.
+- [x] Generic repository-authored visual assets are registered and checksummed.
+- [x] Style contracts are organization-neutral.
 
 ## Validation
 
@@ -27,22 +22,12 @@
 - [x] Visual regression validator passes.
 - [x] Installation smoke test passes.
 - [x] Release validator passes.
-- [x] Negative fixtures are rejected.
-- [x] Exact release-candidate HEAD is reviewed.
-
-## Public repository
-
-- [x] No internal FDS source DOCX/PDF files are committed.
-- [x] No secrets or private keys are committed.
-- [x] No personal-data dataset is included.
-- [x] Public visual fixtures are repository-authored or owner-supplied and rights-cleared for this repository.
-- [x] Trademark limitations are explicit.
+- [x] Debrand validator passes.
+- [x] Unit tests pass.
 
 ## Publication
 
-- [x] Release PR is prepared and owner-authorized for exact-HEAD review and merge.
-- [ ] Annotated tag `v0.2.0` created on the release merge commit.
-- [ ] GitHub Release `v0.2.0` published from checked-in release notes.
-- [ ] Installation smoke test repeated from immutable tag.
-
-The three post-merge publication items require a GitHub API surface that can create tags and Release objects. They remain incomplete until that operation is actually available and executed.
+- [ ] Annotated tag `v1.0.0` created on the release merge commit.
+- [ ] Public GitHub Release published from checked-in notes.
+- [ ] Full validation repeated from immutable tag.
+- [ ] Closure evidence merged.

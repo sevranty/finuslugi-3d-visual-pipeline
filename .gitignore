@@ -1,7 +1,4 @@
 __pycache__/
 *.py[cod]
+validation/runtime/
 .DS_Store
-.env
-.env.*
-output/
-tmp/

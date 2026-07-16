@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Runtime Capability Profile",
+  "type": "object",
+  "required": [
+    "profile_id",
+    "capabilities"
+  ],
+  "properties": {
+    "profile_id": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "supported",
+          "unsupported",
+          "unknown"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}

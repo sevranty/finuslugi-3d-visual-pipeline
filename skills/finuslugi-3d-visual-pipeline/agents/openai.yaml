@@ -1,4 +1,0 @@
-interface:
-  display_name: "Finuslugi 3D Visual Pipeline"
-  short_description: "Create controlled Finuslugi 3D visuals"
-  default_prompt: "Use $finuslugi-3d-visual-pipeline to analyze my references, create a Scene Specification, generate the image, validate it, and show the final result in the chat."

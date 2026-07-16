@@ -1,0 +1,4 @@
+interface:
+  display_name: "3D Visual Pipeline"
+  short_description: "Governed reference-to-image production"
+  default_prompt: "Use the 3D Visual Pipeline to transform my references into a validated three-dimensional visual."

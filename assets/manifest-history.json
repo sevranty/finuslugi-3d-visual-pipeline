@@ -1,36 +1,19 @@
 {
-  "history_version": "1.0",
+  "version": "1.0.0",
   "events": [
     {
-      "event_id": "ASSET-20260715-001",
-      "timestamp": "2026-07-15T12:35:00Z",
-      "action": "registry-upgrade",
-      "asset_ids": ["finuslugi-logo-base", "finuslugi-logo-inverted"],
-      "from_registry_version": "1.0",
-      "to_registry_version": "2.0",
-      "decision_source": "F3D#7 owner execution instruction",
-      "summary": "Normalize stable IDs, semantic versions, rights, public distribution, role restrictions, and collection boundaries for owner-supplied Finuslugi logos.",
-      "checksums": {
-        "finuslugi-logo-base": "bec5c6e658f0a9831ad833b630237ccd39791a79edfb15e35ca9cc7e836520f9",
-        "finuslugi-logo-inverted": "daf24226f671f6c63effa6a64933c59a6310add90f196d9d88b3e045c1bfa0d6"
-      }
-    },
-    {
-      "event_id": "ASSET-20260715-002",
-      "timestamp": "2026-07-15T13:00:00Z",
-      "action": "regression-fixture-admission",
-      "asset_ids": [
-        "modern-flat-growth", "modern-flat-mobility", "modern-flat-security",
-        "silver-gold-trophy", "silver-gold-shield", "silver-gold-coin",
-        "obsidian-gold-vault", "obsidian-gold-key", "obsidian-gold-crown",
-        "anti-modern-flat-red-overload", "anti-silver-gold-chrome",
-        "anti-obsidian-wrong-background", "anti-generated-logo", "anti-composition-drift"
-      ],
-      "from_registry_version": "2.0",
-      "to_registry_version": "2.0",
-      "decision_source": "F3D#4 owner execution instruction",
-      "summary": "Admit repository-authored deterministic SVG fixtures as public regression goldens and diagnostic anti-patterns. They are not production illustrations or generative references.",
-      "checksums_source": "assets/checksums.sha256"
+      "date": "2026-07-16",
+      "action": "generic-release-reset",
+      "assets": [
+        "assets-anchors-modern-flat-cube",
+        "assets-anchors-obsidian-gold-monolith",
+        "assets-anchors-silver-gold-prism",
+        "assets-anti-patterns-palette-overload",
+        "assets-plugin-icon",
+        "assets-plugin-logo",
+        "assets-source-plugin-icon",
+        "assets-source-plugin-logo"
+      ]
     }
   ]
 }

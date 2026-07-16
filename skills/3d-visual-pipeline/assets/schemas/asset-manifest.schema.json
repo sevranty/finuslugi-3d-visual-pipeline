@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Asset Manifest",
+  "type": "object",
+  "required": [
+    "version",
+    "assets"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "asset_id",
+          "version",
+          "path",
+          "sha256",
+          "source_status",
+          "rights_status",
+          "approval_status",
+          "public_distribution_status"
+        ]
+      }
+    }
+  },
+  "additionalProperties": true
+}
