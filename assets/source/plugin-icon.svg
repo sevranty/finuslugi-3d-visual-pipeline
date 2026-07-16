@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Abstract isometric cube">
+  <path d="M128 34 210 80 128 126 46 80Z" fill="#CBD5E1" stroke="#475569" stroke-width="5"/>
+  <path d="M46 80 128 126 128 220 46 174Z" fill="#94A3B8" stroke="#475569" stroke-width="5"/>
+  <path d="M128 126 210 80 210 174 128 220Z" fill="#64748B" stroke="#475569" stroke-width="5"/>
+  <path d="M128 34V220" stroke="#475569" stroke-width="5"/>
+</svg>

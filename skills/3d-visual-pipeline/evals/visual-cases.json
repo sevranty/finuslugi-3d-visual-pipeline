@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "modern-flat-cube",
+      "style_id": "modern-flat",
+      "asset": "assets/anchors/modern-flat/cube.svg",
+      "expected": "accept"
+    },
+    {
+      "id": "silver-gold-prism",
+      "style_id": "silver-gold",
+      "asset": "assets/anchors/silver-gold/prism.svg",
+      "expected": "accept"
+    },
+    {
+      "id": "obsidian-gold-monolith",
+      "style_id": "obsidian-gold",
+      "asset": "assets/anchors/obsidian-gold/monolith.svg",
+      "expected": "accept"
+    },
+    {
+      "id": "palette-overload",
+      "style_id": "modern-flat",
+      "asset": "assets/anti-patterns/palette-overload.svg",
+      "expected": "reject",
+      "diagnostic": "PALETTE_ERROR"
+    }
+  ]
+}

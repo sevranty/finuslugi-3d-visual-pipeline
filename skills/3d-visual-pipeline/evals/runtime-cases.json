@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "profiles": [
+    {
+      "profile_id": "chat-image-runtime@1",
+      "capabilities": {
+        "generate": "supported",
+        "reference-conditioned": "supported",
+        "edit": "supported",
+        "deliver": "supported"
+      }
+    },
+    {
+      "profile_id": "generic-image-runtime@1",
+      "capabilities": {
+        "generate": "supported",
+        "reference-conditioned": "supported",
+        "edit": "unknown",
+        "deliver": "supported"
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scene-spec.schema.json",
+  "title": "Scene Specification",
+  "type": "object",
+  "required": [
+    "version",
+    "task",
+    "mode",
+    "subject",
+    "style_id",
+    "runtime_requirements",
+    "delivery"
+  ],
+  "properties": {
+    "version": {
+      "const": "1.0"
+    },
+    "task": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "style_id": {
+      "enum": [
+        "modern-flat",
+        "silver-gold",
+        "obsidian-gold"
+      ]
+    },
+    "runtime_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "delivery": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

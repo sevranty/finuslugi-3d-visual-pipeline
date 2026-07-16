@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Output Manifest",
+  "type": "object",
+  "required": [
+    "version",
+    "runtime_profile_id",
+    "requested_mode",
+    "selected_mode",
+    "fallback",
+    "limitations",
+    "delivery_status"
+  ],
+  "properties": {
+    "version": {
+      "const": "1.1"
+    },
+    "runtime_profile_id": {
+      "type": "string"
+    },
+    "requested_mode": {
+      "type": "string"
+    },
+    "selected_mode": {
+      "type": "string"
+    },
+    "fallback": {
+      "type": "object"
+    },
+    "limitations": {
+      "type": "array"
+    },
+    "delivery_status": {
+      "enum": [
+        "delivered",
+        "missing"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

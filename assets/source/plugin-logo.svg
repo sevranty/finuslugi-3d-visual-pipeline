@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320" role="img" aria-label="Abstract three-dimensional cube on a neutral panel">
+  <rect x="24" y="24" width="592" height="272" rx="48" fill="#E2E8F0" stroke="#64748B" stroke-width="4"/>
+  <path d="M320 50 425 110 320 170 215 110Z" fill="#CBD5E1" stroke="#475569" stroke-width="6"/>
+  <path d="M215 110 320 170 320 285 215 225Z" fill="#94A3B8" stroke="#475569" stroke-width="6"/>
+  <path d="M320 170 425 110 425 225 320 285Z" fill="#64748B" stroke="#475569" stroke-width="6"/>
+</svg>

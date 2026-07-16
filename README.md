@@ -1,160 +1,67 @@
-<p align="center">
-  <img src="assets/finuslugi-base.png" alt="Финуслуги" width="180">
-</p>
+<p align="center"><img src="assets/plugin-logo.png" alt="Abstract 3D cube" width="320"></p>
 
-# Finuslugi 3D Visual Pipeline
+# 3D Visual Pipeline
 
-Skill-only Codex plugin для управляемого производства 3D-иллюстраций Финуслуг: от коммуникационной задачи и набора референсов до проверенного финального изображения.
+Skill-only Codex plugin for controlled reference-to-image production: from task framing and reference mapping to a validated, visibly delivered three-dimensional visual.
 
-**Версия:** `0.2.0`  
-**Статус:** governed public release candidate
+**Version:** `1.0.0`  
+**Status:** generic public release candidate
 
-## Что делает навык
+## Workflow
 
-Пайплайн разделяет дизайнерское решение, исполнение генератором и доказательную проверку. Навык:
+1. validate inputs and rights
+2. define task, metaphor, and subject
+3. map each reference to one declared role
+4. lock semantics, identity, composition, and style
+5. compile the Scene Specification
+6. choose one versioned style pack
+7. route through observed runtime capabilities
+8. generate or edit without hidden degradation
+9. diagnose and repair local defects
+10. validate, record provenance, and deliver visibly
 
-1. фиксирует задачу, метафору и главный объект;
-2. назначает каждому референсу отдельную роль;
-3. проверяет права, approval status и разрешённые роли ассетов;
-4. формирует Scene Specification как источник правды;
-5. выбирает один версионированный style pack;
-6. строит один промпт или последовательность промптов;
-7. выбирает image runtime по фактическим capabilities;
-8. запрещает скрытые fallback и деградацию режима;
-9. проводит визуальный QA и диагностические локальные итерации;
-10. фиксирует output manifest и гарантирует видимую выдачу изображения.
+## Installation
 
-## Установка
-
-Полная инструкция: `skills/finuslugi-3d-visual-pipeline/references/installation.md`.
-
-### Codex plugin
-
-Добавьте публичный репозиторий `sevranty/finuslugi-3d-visual-pipeline` через доступный в клиенте интерфейс управления плагинами. Используйте тег `v0.2.0` после его публикации либо точный release commit, указанный в release manifest.
-
-### Repository-scoped skill
+Canonical instructions: `skills/3d-visual-pipeline/references/installation.md`.
 
 ```bash
 mkdir -p .agents/skills
-cp -R skills/finuslugi-3d-visual-pipeline .agents/skills/finuslugi-3d-visual-pipeline
+cp -R skills/3d-visual-pipeline .agents/skills/3d-visual-pipeline
+python3 skills/3d-visual-pipeline/scripts/smoke_test_installation.py
 ```
 
-Проверка установки:
+## Canonical contracts
 
-```bash
-python3 skills/finuslugi-3d-visual-pipeline/scripts/smoke_test_installation.py
-```
-
-## Целевая архитектура
-
-```text
-finuslugi-3d-visual-pipeline/
-|-- .codex-plugin/plugin.json
-|-- assets/
-|   |-- manifest.json
-|   |-- manifest-history.json
-|   |-- checksums.sha256
-|   |-- anchors/
-|   |-- anti-patterns/
-|   `-- exploratory/
-|-- docs/decisions/
-|-- release/0.2.0/
-|-- skills/finuslugi-3d-visual-pipeline/
-|   |-- SKILL.md
-|   |-- agents/
-|   |-- references/
-|   |-- assets/schemas/
-|   |-- scripts/
-|   `-- evals/
-|-- validation/
-|-- AGENTS.md
-|-- CHANGELOG.md
-|-- RELEASE_CHECKLIST.md
-|-- LICENSE
-`-- README.md
-```
-
-## Канонические контракты
-
-- runtime-порядок: `skills/finuslugi-3d-visual-pipeline/SKILL.md`;
-- Scene Specification: `skills/finuslugi-3d-visual-pipeline/references/scene-specification.md`;
-- runtime-capabilities: `skills/finuslugi-3d-visual-pipeline/references/runtime-capabilities.md`;
-- asset-governance: `skills/finuslugi-3d-visual-pipeline/references/asset-governance.md`;
-- output manifest: `skills/finuslugi-3d-visual-pipeline/assets/schemas/output-manifest.schema.json`;
-- visual regression: `skills/finuslugi-3d-visual-pipeline/evals/visual-cases.json`;
-- installation.md: `skills/finuslugi-3d-visual-pipeline/references/installation.md`;
-- versioning и release: `skills/finuslugi-3d-visual-pipeline/references/versioning-and-release.md`;
-- compatibility: `skills/finuslugi-3d-visual-pipeline/references/compatibility.md`.
+- skill: `skills/3d-visual-pipeline/SKILL.md`
+- Scene Specification: `skills/3d-visual-pipeline/references/scene-specification.md`
+- runtime capabilities: `skills/3d-visual-pipeline/references/runtime-capabilities.md`
+- asset governance: `skills/3d-visual-pipeline/references/asset-governance.md`
+- diagnostics: `skills/3d-visual-pipeline/references/diagnostic-codes.md`
+- release policy: `skills/3d-visual-pipeline/references/versioning-and-release.md`
 
 ## Style packs
 
-| Style pack | Версия | Статус |
+| Style pack | Version | Contract |
 |---|---:|---|
-| Modern Flat | 2.1 | основной канонический |
-| Silver-Gold | 3.1 | канонический контракт, контролируемое применение |
-| Obsidian Gold | 1.0 | канонический контракт, контролируемое применение |
+| Modern Flat | 2.1 | geometric volume, configurable accent, low visual noise |
+| Silver-Gold | 3.1 | silver-dominant satin materials with restrained gold |
+| Obsidian Gold | 1.0 | one isolated matte dark object with restrained gold |
 
-Техническая валидность style pack не означает автоматическое согласование конкретного продуктового или маркетингового применения.
-
-## Runtime routing
-
-Канонический skill не привязан к названию генератора. Он проверяет capabilities `generate`, `reference-conditioned`, `edit`, `mask-edit`, `multi-reference`, `identity-preservation`, `transparent-output`, `upscale`, `exact-dimensions` и `deliver`.
-
-Поддержаны контрактные профили:
-
-- `chatgpt-image-generation@1`;
-- `nano-banana-style@1`;
-- будущие adapters, соответствующие runtime-capabilities schema.
-
-Неизвестная обязательная capability трактуется как неподдерживаемая. Успех инструмента без изображения в пользовательском ответе — `DELIVERY_MISSING`.
-
-## Asset governance
-
-- каждый визуальный файл имеет stable ID, version, source, owner, rights, approval, permitted roles и SHA-256;
-- unregistered binary отклоняется;
-- exploratory references не являются style source;
-- AI-generated logo — критический `LOGO_ERROR`;
-- public golden допускается только при approved + rights-cleared + public-distribution-approved;
-- светлый фон использует `assets/finuslugi-base.png`;
-- красный или тёмный фон использует `assets/finuslugi-inverted.png`;
-- фирменный цвет Финуслуг и MOEX — `#FF0508`.
-
-## Visual regression
-
-Репозиторий содержит девять deterministic SVG goldens — по три на Modern Flat, Silver-Gold и Obsidian Gold — и пять diagnostic anti-pattern fixtures. Они проверяют контракты, а не заявляют качество production art или конкретной генеративной модели.
-
-Покрыты simple, complex, local-correction и delivery flows, включая `PALETTE_ERROR`, `MATERIAL_ERROR`, `BACKGROUND_ERROR`, `LOGO_ERROR`, `COMPOSITION_DRIFT` и `DELIVERY_MISSING`.
-
-## Проверка
+## Validation
 
 ```bash
-python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_repository.py --no-report
-python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_runtime_contract.py
-python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_asset_registry.py
-python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_visual_regression.py
-python3 skills/finuslugi-3d-visual-pipeline/scripts/smoke_test_installation.py
-python3 skills/finuslugi-3d-visual-pipeline/scripts/validate_release.py
+python3 skills/3d-visual-pipeline/scripts/validate_repository.py
+python3 skills/3d-visual-pipeline/scripts/validate_runtime_contract.py
+python3 skills/3d-visual-pipeline/scripts/validate_asset_registry.py
+python3 skills/3d-visual-pipeline/scripts/validate_visual_regression.py
+python3 skills/3d-visual-pipeline/scripts/smoke_test_installation.py
+python3 skills/3d-visual-pipeline/scripts/validate_release.py
+python3 skills/3d-visual-pipeline/scripts/validate_debrand.py
+python3 -m unittest discover -s skills/3d-visual-pipeline/tests -p "test_*.py"
 ```
 
-Все validators используют только Python standard library. `validate_release.py` проверяет version alignment, installation smoke, публичный состав репозитория, release manifest, права и publication gates.
+All runtime validators use only the Python standard library.
 
-## Совместимость и ограничения
+## License and rights
 
-Поддерживаются Codex plugin packaging, repository-scoped Agent Skills fallback и Python 3.10+. Конкретные возможности генератора остаются runtime-наблюдением. Exact identity preservation не гарантируется.
-
-Матрица совместимости находится в `skills/finuslugi-3d-visual-pipeline/references/compatibility.md`.
-
-## Цифровой след
-
-- архитектура: [Issue #1](https://github.com/sevranty/finuslugi-3d-visual-pipeline/issues/1);
-- канонический навык: [Issue #2](https://github.com/sevranty/finuslugi-3d-visual-pipeline/issues/2);
-- style packs: [Issue #3](https://github.com/sevranty/finuslugi-3d-visual-pipeline/issues/3);
-- visual regression: [Issue #4](https://github.com/sevranty/finuslugi-3d-visual-pipeline/issues/4);
-- deterministic validation: [Issue #5](https://github.com/sevranty/finuslugi-3d-visual-pipeline/issues/5);
-- runtime contract: [Issue #6](https://github.com/sevranty/finuslugi-3d-visual-pipeline/issues/6);
-- asset governance: [Issue #7](https://github.com/sevranty/finuslugi-3d-visual-pipeline/issues/7);
-- release: [Issue #8](https://github.com/sevranty/finuslugi-3d-visual-pipeline/issues/8).
-
-## Лицензия
-
-MIT применяется к коду и оригинальной документации репозитория. Права на товарные знаки, логотипы, внутренние исходные документы и сторонние референсы регулируются отдельно. Публикация логотипов в этом репозитории не предоставляет downstream-пользователям права на товарный знак.
+MIT covers repository code and original documentation. Visual assets in `assets/` are repository-authored unless their manifest entry states otherwise. No trademark or third-party usage right is implied.

@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "basic-generate",
+      "mode": "reinterpretation",
+      "expected_style": "modern-flat",
+      "expected_delivery": "delivered"
+    },
+    {
+      "id": "missing-input",
+      "mode": "reinterpretation",
+      "expected_diagnostic": "INPUT_MISSING"
+    }
+  ]
+}

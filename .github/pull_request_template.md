@@ -1,44 +1,29 @@
 ## Scope
 
-- Issues: Refs #
-- Branch:
-- HEAD SHA:
+- Issue: Refs #
+- Base SHA:
+- Exact HEAD:
 
 ## Changes
 
-- [ ] Architecture
-- [ ] Canonical skill
-- [ ] Style packs
-- [ ] Schemas and validator
-- [ ] Evals
-- [ ] Assets and rights metadata
-- [ ] Documentation
+- 
 
 ## Validation evidence
 
 ```text
-Command:
-Run ID:
-HEAD SHA:
-Status:
+command:
+status:
+report:
 ```
 
-## Review checklist
+## Review
 
-- [ ] `SKILL.md` contains only runtime order and links to canonical references.
-- [ ] Detailed rules are not duplicated across files.
-- [ ] Scene Specification is the source of truth.
-- [ ] Style IDs and versions are explicit.
-- [ ] Critical defects override weighted QA.
-- [ ] Final image delivery is mandatory.
-- [ ] Binary assets have manifest entries and checksums.
-- [ ] Rights and rollout limitations are explicit.
-- [ ] PR remains Draft until a separate lifecycle decision.
-
-## Known limitations
-
-- 
+- [ ] Full diff matches the issue scope.
+- [ ] Canonical contracts remain consistent.
+- [ ] Validators and tests pass on exact HEAD.
+- [ ] Relative links, manifests, checksums, and release metadata are valid.
+- [ ] No secrets, temporary files, unresolved review threads, or hidden scope expansion remain.
 
 ## Lifecycle
 
-Do not mark Ready and do not merge without a separate owner decision.
+Keep the PR in Draft until exact-head validation and technical review are complete.

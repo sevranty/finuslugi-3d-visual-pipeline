@@ -1,6 +1,6 @@
 ---
 name: Implementation task
-about: Track architecture, canonical skill, QA, runtime, assets, or release work
+about: Track architecture, runtime, validation, assets, or release work
 title: "[AREA] "
 labels: ""
 assignees: ""
@@ -8,7 +8,7 @@ assignees: ""
 
 ## Context
 
-Describe the problem, source materials, and dependencies.
+Describe the verified problem, source materials, dependencies, and exact base SHA.
 
 ## Goal
 
@@ -22,25 +22,10 @@ State the measurable outcome.
 
 - 
 
-## Artifacts
+## Definition of done
 
-```text
-repository/path
-```
-
-## Definition of Done
-
-- [ ] Implementation is complete.
+- [ ] Implementation is complete in one task branch.
 - [ ] Canonical source-of-truth files are updated without duplication.
-- [ ] Relevant evals or fixtures are updated.
-- [ ] Local validation evidence records command, run ID, and HEAD SHA.
-- [ ] Draft PR links this Issue.
-- [ ] PR is not marked Ready and is not merged without a separate owner decision.
-
-## Digital trail
-
-- Branch:
-- Commits:
-- Draft PR:
-- Validation run:
-- Review decision:
+- [ ] Relevant validators, tests, and fixtures pass on exact HEAD.
+- [ ] Draft PR links this issue and records evidence.
+- [ ] Full diff review and lifecycle decision are complete.
