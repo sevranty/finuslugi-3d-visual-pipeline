@@ -1,0 +1,107 @@
+name: 3DP execution task
+description: Create one scoped implementation task for 3D Visual Pipeline
+title: "🔗 3DP#░░ → 🔀PR#░░ • 🛠️ execution • "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fixed project constants
+        `PROJECT_ID: 3D_VISUAL_PIPELINE`
+        `SHORT_ID: 3DP`
+        `REPOSITORY_URL: https://github.com/sevranty/3d-visual-pipeline`
+        `TASKS_URL: https://github.com/sevranty/3d-visual-pipeline/issues`
+        `TASK_PROFILE: execution`
+        `TASK_ID: auto`
+        `handoff_mode: delta-only`
+        A relation never grants write access.
+  - type: textarea
+    id: action
+    attributes:
+      label: ACTION
+      description: One measurable action
+    validations:
+      required: true
+  - type: input
+    id: exact_base
+    attributes:
+      label: Exact base SHA
+      description: Current main SHA verified before branch creation
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Branch
+      description: One task branch
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Reference URLs
+      description: Issues, PRs and canonical sources
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: OUTPUT
+      description: Concrete artifacts and lifecycle result
+    validations:
+      required: true
+  - type: textarea
+    id: write_scope
+    attributes:
+      label: WRITE_SCOPE
+      description: Repository paths and editable metadata
+      placeholder: |
+        - repository:sevranty/3d-visual-pipeline
+        - path:...
+    validations:
+      required: true
+  - type: textarea
+    id: protected
+    attributes:
+      label: PROTECTED_RESOURCES
+      description: Resources that must not change
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Verifiable completion conditions
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: Checks
+      description: Exact commands and expected checks
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Exact HEAD, commands, exit codes, checks, review and merge proof
+    validations:
+      required: true
+  - type: textarea
+    id: done_when
+    attributes:
+      label: DONE_WHEN
+      description: Final factual state
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety
+      options:
+        - label: Work is limited to the selected repository and WRITE_SCOPE
+          required: true
+        - label: Relations do not grant cross-repository write access
+          required: true
+        - label: PR stays Draft until exact-HEAD validation and review pass
+          required: true

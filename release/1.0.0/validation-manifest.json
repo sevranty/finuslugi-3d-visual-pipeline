@@ -5,6 +5,8 @@
   "status": "candidate",
   "plugin_name": "3d-visual-pipeline",
   "skill_path": "skills/3d-visual-pipeline",
+  "validation_context": "3dp/validation",
+  "validation_entrypoint": "python3 skills/3d-visual-pipeline/scripts/validate_all.py --report-dir validation/runtime",
   "validation_commands": [
     "python3 skills/3d-visual-pipeline/scripts/validate_repository.py",
     "python3 skills/3d-visual-pipeline/scripts/validate_runtime_contract.py",
@@ -15,9 +17,23 @@
     "python3 skills/3d-visual-pipeline/scripts/validate_debrand.py",
     "python3 -m unittest discover -s skills/3d-visual-pipeline/tests -p \"test_*.py\""
   ],
+  "hosted_ci": {
+    "status": "not_run",
+    "run_url": null,
+    "commit_sha": null
+  },
+  "tag_target": null,
+  "tagged_validation": null,
+  "release_url": null,
+  "legacy_release": {
+    "tag": "v0.2.0",
+    "target": "3d2cdea9f651f7641ec1f805519a777f013dd6ec",
+    "immutable": true
+  },
   "asset_manifest_sha256": "26b1c0e1db1cd323343359ee2b2fa3dc7e5825f57a447dc42bee89f8234bbaa9",
   "known_limitations": [
     "Generator capabilities remain runtime observations.",
-    "Exact identity preservation is not guaranteed."
+    "Exact identity preservation is not guaranteed.",
+    "Publication fields remain null until tag and GitHub Release facts exist."
   ]
 }
