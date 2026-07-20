@@ -42,6 +42,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("gh api --method POST", self.workflow)
 
     def test_artifacts_are_failure_or_requested_manual_only(self):
+        self.assertIn("default: false", self.workflow)
         self.assertIn(
             "if: failure() || (github.event_name == 'workflow_dispatch' && inputs.upload_evidence)",
             self.workflow,
