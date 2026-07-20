@@ -27,6 +27,15 @@ def record(number: int, task_id: str, state: str = "open", supersedes: str = "no
     )
 
 
+def issue_payload(number: int = 27, state: str = "open", task_id: str = "3DP-027"):
+    return {
+        "number": number,
+        "state": state,
+        "title": f"🔗 3DP#{number} → governance",
+        "body": f"## TASK_CONTEXT\n\n```text\nTASK_ID: {task_id}\n```\n",
+    }
+
+
 class PullRequestGovernanceTests(unittest.TestCase):
     def test_valid_single_pr_passes(self):
         current = record(28, "3DP-027")
@@ -37,6 +46,7 @@ class PullRequestGovernanceTests(unittest.TestCase):
         errors = mod.validate_records(current, [current], {})
         self.assertIn("PR body lacks exact TASK_ID metadata", errors)
         self.assertIn("PR body lacks canonical Issue metadata", errors)
+        self.assertIn("PR title lacks 3DP#N task number", errors)
 
     def test_task_and_issue_mismatch_fails(self):
         current = mod.PullRequestRecord(
@@ -50,6 +60,12 @@ class PullRequestGovernanceTests(unittest.TestCase):
     def test_parallel_active_pr_for_same_task_fails(self):
         current = record(28, "3DP-027")
         duplicate = record(29, "3DP-027")
+        errors = mod.validate_records(current, [current, duplicate], {})
+        self.assertIn("parallel active implementation PRs for 3DP-027: #29", errors)
+
+    def test_legacy_title_only_duplicate_is_detected(self):
+        current = record(28, "3DP-027")
+        duplicate = mod.PullRequestRecord(29, "🔗 3DP#27 → old PR", "", "open")
         errors = mod.validate_records(current, [current, duplicate], {})
         self.assertIn("parallel active implementation PRs for 3DP-027: #29", errors)
 
@@ -83,6 +99,23 @@ class PullRequestGovernanceTests(unittest.TestCase):
     def test_pr_cannot_supersede_itself(self):
         current = record(28, "3DP-027", supersedes="PR #28 (closed)")
         self.assertIn("PR cannot supersede itself", mod.validate_records(current, [current], {28: current}))
+
+    def test_canonical_issue_passes(self):
+        self.assertEqual(mod.validate_canonical_issue(issue_payload(), 27, "3DP-027"), [])
+
+    def test_closed_canonical_issue_fails(self):
+        errors = mod.validate_canonical_issue(issue_payload(state="closed"), 27, "3DP-027")
+        self.assertIn("canonical Issue is not open", errors)
+
+    def test_canonical_issue_task_mismatch_fails(self):
+        errors = mod.validate_canonical_issue(issue_payload(task_id="3DP-008"), 27, "3DP-027")
+        self.assertIn("canonical Issue body lacks matching TASK_ID", errors)
+
+    def test_pull_request_cannot_be_canonical_issue(self):
+        payload = issue_payload()
+        payload["pull_request"] = {"url": "https://api.github.com/pulls/27"}
+        errors = mod.validate_canonical_issue(payload, 27, "3DP-027")
+        self.assertIn("canonical Issue points to a Pull Request", errors)
 
 
 if __name__ == "__main__":
