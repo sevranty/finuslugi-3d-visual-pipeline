@@ -12,6 +12,7 @@ concurrency:
 
 permissions:
   contents: read
+  pull-requests: read
   statuses: write
 
 jobs:
@@ -22,21 +23,32 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
 
       - name: Run complete validation
         run: python3 skills/3d-visual-pipeline/scripts/validate_all.py --report-dir validation/runtime
+
+      - name: Validate one active PR per TASK_ID
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 skills/3d-visual-pipeline/scripts/validate_pr_governance.py
+          --event "$GITHUB_EVENT_PATH"
+          --repository "$GITHUB_REPOSITORY"
+          --report validation/runtime/pr-governance.json
 
       - name: Publish success status
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh api --method POST "repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha || github.sha }}" -f state=success -f context=3dp/validation -f description="All repository and release validators passed"
+        run: gh api --method POST "repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha || github.sha }}" -f state=success -f context=3dp/validation -f description="All repository, release and PR governance validators passed"
 
       - name: Publish failure status
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh api --method POST "repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha || github.sha }}" -f state=failure -f context=3dp/validation -f description="Repository or release validation failed"
+        run: gh api --method POST "repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha || github.sha }}" -f state=failure -f context=3dp/validation -f description="Repository, release or PR governance validation failed"
 
       - name: Upload evidence
         if: always()
