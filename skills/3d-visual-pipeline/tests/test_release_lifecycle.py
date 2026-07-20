@@ -31,11 +31,12 @@ def tagged_evidence(target: str):
         "status": "pass",
         "tag": "v1.0.0",
         "tag_object_type": "tag",
+        "tag_object_sha": "3" * 40,
         "checkout_sha": target,
         "peeled_commit": target,
         "command": "python3 skills/3d-visual-pipeline/scripts/validate_all.py --report-dir validation/runtime",
         "report": "validation/runtime/summary.json",
-        "validated_at": "2026-07-20T12:00:00Z",
+        "validated_at": "2026-07-20T12:00:00+00:00",
     }
 
 
@@ -91,6 +92,15 @@ class ReleaseLifecycleTests(unittest.TestCase):
         self.assertIn("hosted CI result lacks canonical run URL", errors)
         self.assertIn("hosted CI result lacks exact commit", errors)
 
+    def test_hosted_result_rejects_other_repository_url(self):
+        manifest = candidate_manifest()
+        manifest["hosted_ci"] = {
+            "status": "passed",
+            "run_url": "https://github.com/other/repository/actions/runs/1",
+            "commit_sha": "1" * 40,
+        }
+        self.assertIn("hosted CI result lacks canonical run URL", mod.validate_manifest(manifest))
+
     def test_tagged_validation_must_bind_to_target(self):
         manifest = candidate_manifest()
         manifest["status"] = "tagged-validated"
@@ -113,6 +123,20 @@ class ReleaseLifecycleTests(unittest.TestCase):
             }
         )
         self.assertIn("tagged validation lacks annotated tag object", mod.validate_manifest(manifest))
+
+    def test_tagged_validation_requires_tag_object_sha(self):
+        manifest = candidate_manifest()
+        target = "1" * 40
+        evidence = tagged_evidence(target)
+        evidence["tag_object_sha"] = None
+        manifest.update(
+            {
+                "status": "tagged-validated",
+                "tag_target": target,
+                "tagged_validation": evidence,
+            }
+        )
+        self.assertIn("tagged validation lacks tag object SHA", mod.validate_manifest(manifest))
 
     def test_tagged_validation_requires_command_report_and_timestamp(self):
         manifest = candidate_manifest()
