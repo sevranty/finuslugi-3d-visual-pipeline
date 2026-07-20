@@ -8,15 +8,12 @@ from validation_lib import Result, parse_args, read_json, repo_root, write_repor
 
 VERSION = "1.0.0"
 TAG = "v1.0.0"
+REPOSITORY_URL = "https://github.com/sevranty/3d-visual-pipeline"
 LEGACY_TAG = "v0.2.0"
 LEGACY_TARGET = "3d2cdea9f651f7641ec1f805519a777f013dd6ec"
 ALLOWED_STATES = {"candidate", "tagged-validated", "published"}
 HEX_SHA = re.compile(r"^[0-9a-f]{40}$")
-UTC_TIMESTAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$")
-
-
-def is_https_url(value: Any) -> bool:
-    return isinstance(value, str) and value.startswith("https://")
+UTC_TIMESTAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$")
 
 
 def has_text(value: Any) -> bool:
@@ -38,7 +35,8 @@ def validate_hosted_ci(hosted: Any) -> list[str]:
         if run_url is not None or commit_sha is not None:
             errors.append("hosted CI not_run contains run evidence")
     else:
-        if not is_https_url(run_url) or "/actions/runs/" not in run_url:
+        expected_prefix = f"{REPOSITORY_URL}/actions/runs/"
+        if not isinstance(run_url, str) or not run_url.startswith(expected_prefix):
             errors.append("hosted CI result lacks canonical run URL")
         if not HEX_SHA.fullmatch(str(commit_sha or "")):
             errors.append("hosted CI result lacks exact commit")
@@ -55,6 +53,8 @@ def validate_tagged_evidence(tagged: Any, tag_target: Any) -> list[str]:
         errors.append("tagged validation uses wrong tag")
     if tagged.get("tag_object_type") != "tag":
         errors.append("tagged validation lacks annotated tag object")
+    if not HEX_SHA.fullmatch(str(tagged.get("tag_object_sha") or "")):
+        errors.append("tagged validation lacks tag object SHA")
     if tagged.get("checkout_sha") != tag_target:
         errors.append("tagged validation is not bound to tag target")
     if tagged.get("peeled_commit") != tag_target:
@@ -70,8 +70,8 @@ def validate_tagged_evidence(tagged: Any, tag_target: Any) -> list[str]:
 
 def validate_release_evidence(release: Any, release_url: Any) -> list[str]:
     errors: list[str] = []
-    expected_suffix = f"/releases/tag/{TAG}"
-    if not isinstance(release_url, str) or not release_url.endswith(expected_suffix):
+    expected_url = f"{REPOSITORY_URL}/releases/tag/{TAG}"
+    if release_url != expected_url:
         errors.append("published state lacks canonical release URL")
     if not isinstance(release, dict):
         return errors + ["published state lacks GitHub Release evidence"]
