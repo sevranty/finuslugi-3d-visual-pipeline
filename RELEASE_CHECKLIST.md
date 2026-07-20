@@ -6,7 +6,7 @@
 - [x] Skill path is `skills/3d-visual-pipeline`
 - [x] Project SHORT_ID is `3DP`
 - [x] Plugin version is `1.0.0`
-- [x] Validation context is `3dp/validation`
+- [x] Native validation check is `Validate repository / validate`; no duplicate custom commit status is published
 
 ## Governance
 

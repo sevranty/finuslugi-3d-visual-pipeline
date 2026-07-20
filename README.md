@@ -65,7 +65,7 @@ One local command matches the GitHub Actions validation set:
 python3 skills/3d-visual-pipeline/scripts/validate_all.py --report-dir validation/runtime
 ```
 
-The workflow publishes the `3dp/validation` status and uploads one compact JSON evidence artifact. When a hosted run does not exist, report `not run`; do not replace it with a local-CI claim.
+The hosted workflow uses one read-only `validate` job. Pull Request updates run only through `pull_request`; `push` validation is limited to `main`, and `workflow_dispatch` remains available for exact-ref checks. The native `Validate repository / validate` check is canonical; the workflow does not publish a duplicate custom commit status. Successful automatic runs upload no artifact, while failed runs and requested manual runs retain compact JSON evidence.
 
 ## Governance
 
