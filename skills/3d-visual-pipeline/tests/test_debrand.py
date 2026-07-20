@@ -57,6 +57,24 @@ class DebrandTests(unittest.TestCase):
             (root / "CHANGELOG.md").write_text("Legacy historical identifier " + token)
             self.assertEqual(mod.scan(root), [])
 
+    def test_marked_historical_sha_allowed_in_incident_record(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            incident = root / "docs/debt/3dp-027-governance-incident.md"
+            incident.parent.mkdir(parents=True)
+            token = "".join(["f", "3", "d"])
+            incident.write_text("historical merge abc" + token + "123")
+            self.assertEqual(mod.scan(root), [])
+
+    def test_unmarked_historical_sha_rejected_in_incident_record(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            incident = root / "docs/debt/3dp-027-governance-incident.md"
+            incident.parent.mkdir(parents=True)
+            token = "".join(["f", "3", "d"])
+            incident.write_text("merge abc" + token + "123")
+            self.assertTrue(mod.scan(root))
+
     def test_non_allowlisted_historical_short_id_rejected(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
