@@ -12,6 +12,80 @@ LEGACY_TAG = "v0.2.0"
 LEGACY_TARGET = "3d2cdea9f651f7641ec1f805519a777f013dd6ec"
 ALLOWED_STATES = {"candidate", "tagged-validated", "published"}
 HEX_SHA = re.compile(r"^[0-9a-f]{40}$")
+UTC_TIMESTAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$")
+
+
+def is_https_url(value: Any) -> bool:
+    return isinstance(value, str) and value.startswith("https://")
+
+
+def has_text(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def validate_hosted_ci(hosted: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(hosted, dict):
+        return ["hosted CI evidence must be an object"]
+
+    status = hosted.get("status")
+    run_url = hosted.get("run_url")
+    commit_sha = hosted.get("commit_sha")
+    if status not in {"not_run", "passed", "failed"}:
+        errors.append("hosted CI status invalid")
+        return errors
+    if status == "not_run":
+        if run_url is not None or commit_sha is not None:
+            errors.append("hosted CI not_run contains run evidence")
+    else:
+        if not is_https_url(run_url) or "/actions/runs/" not in run_url:
+            errors.append("hosted CI result lacks canonical run URL")
+        if not HEX_SHA.fullmatch(str(commit_sha or "")):
+            errors.append("hosted CI result lacks exact commit")
+    return errors
+
+
+def validate_tagged_evidence(tagged: Any, tag_target: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(tagged, dict):
+        return ["tagged validation evidence missing"]
+    if tagged.get("status") != "pass":
+        errors.append("tagged validation is not pass")
+    if tagged.get("tag") != TAG:
+        errors.append("tagged validation uses wrong tag")
+    if tagged.get("tag_object_type") != "tag":
+        errors.append("tagged validation lacks annotated tag object")
+    if tagged.get("checkout_sha") != tag_target:
+        errors.append("tagged validation is not bound to tag target")
+    if tagged.get("peeled_commit") != tag_target:
+        errors.append("tagged validation peeled commit differs from tag target")
+    if not has_text(tagged.get("command")):
+        errors.append("tagged validation command missing")
+    if not has_text(tagged.get("report")):
+        errors.append("tagged validation report missing")
+    if not UTC_TIMESTAMP.fullmatch(str(tagged.get("validated_at") or "")):
+        errors.append("tagged validation timestamp invalid")
+    return errors
+
+
+def validate_release_evidence(release: Any, release_url: Any) -> list[str]:
+    errors: list[str] = []
+    expected_suffix = f"/releases/tag/{TAG}"
+    if not isinstance(release_url, str) or not release_url.endswith(expected_suffix):
+        errors.append("published state lacks canonical release URL")
+    if not isinstance(release, dict):
+        return errors + ["published state lacks GitHub Release evidence"]
+    if release.get("url") != release_url:
+        errors.append("GitHub Release evidence URL differs from release_url")
+    if release.get("tag") != TAG:
+        errors.append("GitHub Release evidence uses wrong tag")
+    if release.get("draft") is not False:
+        errors.append("GitHub Release must be non-draft")
+    if release.get("prerelease") is not False:
+        errors.append("GitHub Release must be non-prerelease")
+    if not UTC_TIMESTAMP.fullmatch(str(release.get("published_at") or "")):
+        errors.append("GitHub Release publication timestamp invalid")
+    return errors
 
 
 def validate_manifest(manifest: dict[str, Any]) -> list[str]:
@@ -23,36 +97,27 @@ def validate_manifest(manifest: dict[str, Any]) -> list[str]:
     if state not in ALLOWED_STATES:
         errors.append("release status invalid")
 
-    hosted = manifest.get("hosted_ci", {})
-    hosted_status = hosted.get("status")
-    if hosted_status not in {"not_run", "passed", "failed"}:
-        errors.append("hosted CI status invalid")
-    if hosted_status == "passed":
-        if not hosted.get("run_url") or not HEX_SHA.fullmatch(str(hosted.get("commit_sha", ""))):
-            errors.append("hosted CI pass lacks run URL or exact commit")
+    errors.extend(validate_hosted_ci(manifest.get("hosted_ci")))
 
     tag_target = manifest.get("tag_target")
     release_url = manifest.get("release_url")
     tagged = manifest.get("tagged_validation")
+    release = manifest.get("github_release")
 
     if state == "candidate":
-        if tag_target is not None or release_url is not None or tagged is not None:
+        if tag_target is not None or release_url is not None or tagged is not None or release is not None:
             errors.append("candidate contains publication evidence")
 
     if state in {"tagged-validated", "published"}:
         if not HEX_SHA.fullmatch(str(tag_target or "")):
             errors.append("tag target missing or invalid")
-        if not isinstance(tagged, dict) or tagged.get("status") != "pass":
-            errors.append("tagged validation is not pass")
-        elif tagged.get("checkout_sha") != tag_target:
-            errors.append("tagged validation is not bound to tag target")
+        errors.extend(validate_tagged_evidence(tagged, tag_target))
 
-    if state == "tagged-validated" and release_url is not None:
-        errors.append("tagged-validated state contains release URL")
+    if state == "tagged-validated":
+        if release_url is not None or release is not None:
+            errors.append("tagged-validated state contains release evidence")
     if state == "published":
-        expected_suffix = f"/releases/tag/{TAG}"
-        if not isinstance(release_url, str) or not release_url.endswith(expected_suffix):
-            errors.append("published state lacks canonical release URL")
+        errors.extend(validate_release_evidence(release, release_url))
 
     legacy = manifest.get("legacy_release", {})
     if legacy.get("tag") != LEGACY_TAG or legacy.get("target") != LEGACY_TARGET:
