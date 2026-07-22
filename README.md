@@ -5,7 +5,8 @@
 Skill-only Codex plugin for controlled reference-to-image production: from task framing and reference mapping to a validated, visibly delivered three-dimensional visual.
 
 **Version:** `1.0.0`  
-**Status:** generic public release candidate
+**Status:** generic public release  
+**Release:** [`v1.0.0`](https://github.com/sevranty/3d-visual-pipeline/releases/tag/v1.0.0)
 
 ## Workflow
 
@@ -66,6 +67,8 @@ python3 skills/3d-visual-pipeline/scripts/validate_all.py --report-dir validatio
 ```
 
 The hosted workflow uses one read-only `validate` job. Pull Request updates run only through `pull_request`; `push` validation is limited to `main`, and `workflow_dispatch` remains available for exact-ref checks. The native `Validate repository / validate` check is canonical; the workflow does not publish a duplicate custom commit status. Successful automatic runs upload no artifact, while failed runs and requested manual runs retain compact JSON evidence.
+
+Release `v1.0.0` was validated from its annotated immutable tag. The tag object, peeled commit, clean-checkout result and public GitHub Release facts are recorded in `release/1.0.0/validation-manifest.json` and `validation/3dp-008-v1.0.0-release-evidence.json`.
 
 ## Governance
 
