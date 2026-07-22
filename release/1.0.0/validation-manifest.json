@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "intended_tag": "v1.0.0",
   "base_sha": "3d2cdea9f651f7641ec1f805519a777f013dd6ec",
-  "status": "candidate",
+  "status": "published",
   "plugin_name": "3d-visual-pipeline",
   "skill_path": "skills/3d-visual-pipeline",
   "validation_check": "Validate repository / validate",
@@ -22,9 +22,26 @@
     "run_url": null,
     "commit_sha": null
   },
-  "tag_target": null,
-  "tagged_validation": null,
-  "release_url": null,
+  "tag_target": "eea9b34403d05b32393e118883334e75f0d76170",
+  "tagged_validation": {
+    "status": "pass",
+    "tag": "v1.0.0",
+    "tag_object_type": "tag",
+    "tag_object_sha": "158aa30c4fa7e17ae587c288b619df1ff824f62d",
+    "checkout_sha": "eea9b34403d05b32393e118883334e75f0d76170",
+    "peeled_commit": "eea9b34403d05b32393e118883334e75f0d76170",
+    "command": "python3 skills/3d-visual-pipeline/scripts/validate_all.py --report-dir /tmp/3dp-v1.0.0-validation",
+    "report": "validation/3dp-008-v1.0.0-release-evidence.json",
+    "validated_at": "2026-07-22T19:42:40.666580+00:00"
+  },
+  "release_url": "https://github.com/sevranty/3d-visual-pipeline/releases/tag/v1.0.0",
+  "github_release": {
+    "url": "https://github.com/sevranty/3d-visual-pipeline/releases/tag/v1.0.0",
+    "tag": "v1.0.0",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-07-22T19:33:46Z"
+  },
   "legacy_release": {
     "tag": "v0.2.0",
     "target": "3d2cdea9f651f7641ec1f805519a777f013dd6ec",
@@ -34,6 +51,6 @@
   "known_limitations": [
     "Generator capabilities remain runtime observations.",
     "Exact identity preservation is not guaranteed.",
-    "Publication fields remain null until tag and GitHub Release facts exist."
+    "PR #28 retains two known governance findings that are recorded separately and are not represented as fixed by this release."
   ]
 }
