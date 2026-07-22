@@ -7,6 +7,7 @@ from pathlib import Path
 class WorkflowContractTests(unittest.TestCase):
     NATIVE_CHECK = "Validate repository / validate"
     LEGACY_CUSTOM_STATUS = "3dp/validation"
+    RELEASE_URL = "https://github.com/sevranty/3d-visual-pipeline/releases/tag/v1.0.0"
 
     @classmethod
     def setUpClass(cls):
@@ -55,14 +56,38 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("validation_context", self.manifest)
         self.assertNotIn(self.LEGACY_CUSTOM_STATUS, json.dumps(self.manifest, sort_keys=True))
 
-    def test_ci_identity_migration_preserves_candidate_release_state(self):
-        self.assertEqual(self.manifest.get("status"), "candidate")
-        self.assertEqual(
-            self.manifest.get("hosted_ci"),
-            {"status": "not_run", "run_url": None, "commit_sha": None},
-        )
-        for field in ("tag_target", "tagged_validation", "release_url"):
-            self.assertIsNone(self.manifest.get(field))
+    def test_release_state_matches_publication_evidence(self):
+        state = self.manifest.get("status")
+        self.assertIn(state, {"candidate", "tagged-validated", "published"})
+
+        tag_target = self.manifest.get("tag_target")
+        tagged_validation = self.manifest.get("tagged_validation")
+        release_url = self.manifest.get("release_url")
+        github_release = self.manifest.get("github_release")
+
+        if state == "candidate":
+            self.assertIsNone(tag_target)
+            self.assertIsNone(tagged_validation)
+            self.assertIsNone(release_url)
+            self.assertIsNone(github_release)
+            return
+
+        self.assertRegex(str(tag_target or ""), r"^[0-9a-f]{40}$")
+        self.assertIsInstance(tagged_validation, dict)
+        self.assertEqual(tagged_validation.get("status"), "pass")
+        self.assertEqual(tagged_validation.get("checkout_sha"), tag_target)
+        self.assertEqual(tagged_validation.get("peeled_commit"), tag_target)
+
+        if state == "tagged-validated":
+            self.assertIsNone(release_url)
+            self.assertIsNone(github_release)
+            return
+
+        self.assertEqual(release_url, self.RELEASE_URL)
+        self.assertIsInstance(github_release, dict)
+        self.assertEqual(github_release.get("url"), self.RELEASE_URL)
+        self.assertIs(github_release.get("draft"), False)
+        self.assertIs(github_release.get("prerelease"), False)
 
     def test_legacy_custom_status_is_explicitly_historical(self):
         self.assertIn(
