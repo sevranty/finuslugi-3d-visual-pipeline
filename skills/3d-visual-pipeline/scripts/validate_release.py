@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -90,6 +91,7 @@ def validate_git_tag(
     root: Path,
     manifest: dict[str, Any],
     git_reader: GitReader = read_git_value,
+    require_tag: bool = False,
 ) -> list[str]:
     state = manifest.get("status")
     if state not in {"tagged-validated", "published"}:
@@ -101,16 +103,19 @@ def validate_git_tag(
     recorded_object_sha = tagged.get("tag_object_sha") if isinstance(tagged, dict) else None
     recorded_peeled_commit = tagged.get("peeled_commit") if isinstance(tagged, dict) else None
 
+    actual_object_sha, detail = git_reader(root, ("show-ref", "--verify", "--hash", TAG_REF))
+    if detail is not None:
+        if require_tag:
+            return [f"Git release tag {TAG} is required but unavailable: {detail}"]
+        return []
+
     actual_type, detail = git_reader(root, ("cat-file", "-t", TAG_REF))
     if detail is not None:
-        return [f"Git release tag {TAG} could not be resolved: {detail}"]
-    if actual_type != "tag":
+        errors.append(f"Git release tag type could not be resolved: {detail}")
+    elif actual_type != "tag":
         errors.append(f"Git release tag {TAG} is not annotated")
 
-    actual_object_sha, detail = git_reader(root, ("rev-parse", TAG_REF))
-    if detail is not None:
-        errors.append(f"Git tag object SHA could not be resolved: {detail}")
-    elif actual_object_sha != recorded_object_sha:
+    if actual_object_sha != recorded_object_sha:
         errors.append("Git tag object SHA differs from recorded evidence")
 
     actual_peeled_commit, detail = git_reader(root, ("rev-parse", f"{TAG_REF}^{{}}"))
@@ -196,7 +201,11 @@ def main() -> int:
         result.error("plugin version not aligned")
     for error in validate_manifest(manifest):
         result.error(error)
-    for error in validate_git_tag(root, manifest):
+    for error in validate_git_tag(
+        root,
+        manifest,
+        require_tag=os.environ.get("RELEASE_REQUIRE_GIT_TAG") == "1",
+    ):
         result.error(error)
 
     for path in [
