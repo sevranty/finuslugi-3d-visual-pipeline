@@ -10,6 +10,7 @@ from validation_lib import Result, parse_args, read_json, repo_root, write_repor
 
 VERSION = "1.0.0"
 TAG = "v1.0.0"
+TAG_REF = f"refs/tags/{TAG}"
 REPOSITORY_URL = "https://github.com/sevranty/3d-visual-pipeline"
 LEGACY_TAG = "v0.2.0"
 LEGACY_TARGET = "3d2cdea9f651f7641ec1f805519a777f013dd6ec"
@@ -100,19 +101,19 @@ def validate_git_tag(
     recorded_object_sha = tagged.get("tag_object_sha") if isinstance(tagged, dict) else None
     recorded_peeled_commit = tagged.get("peeled_commit") if isinstance(tagged, dict) else None
 
-    actual_type, detail = git_reader(root, ("cat-file", "-t", TAG))
+    actual_type, detail = git_reader(root, ("cat-file", "-t", TAG_REF))
     if detail is not None:
         return [f"Git release tag {TAG} could not be resolved: {detail}"]
     if actual_type != "tag":
         errors.append(f"Git release tag {TAG} is not annotated")
 
-    actual_object_sha, detail = git_reader(root, ("rev-parse", TAG))
+    actual_object_sha, detail = git_reader(root, ("rev-parse", TAG_REF))
     if detail is not None:
         errors.append(f"Git tag object SHA could not be resolved: {detail}")
     elif actual_object_sha != recorded_object_sha:
         errors.append("Git tag object SHA differs from recorded evidence")
 
-    actual_peeled_commit, detail = git_reader(root, ("rev-parse", f"{TAG}^{{}}"))
+    actual_peeled_commit, detail = git_reader(root, ("rev-parse", f"{TAG_REF}^{{}}"))
     if detail is not None:
         errors.append(f"Git peeled release commit could not be resolved: {detail}")
     else:
