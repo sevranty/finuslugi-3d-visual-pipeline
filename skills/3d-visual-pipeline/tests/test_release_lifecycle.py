@@ -62,6 +62,14 @@ def published_manifest():
     return manifest
 
 
+def fake_git(values):
+    def reader(root: Path, args: tuple[str, ...]):
+        del root
+        return values.get(args, (None, f"missing command: {' '.join(args)}"))
+
+    return reader
+
+
 class ReleaseLifecycleTests(unittest.TestCase):
     def test_candidate_passes(self):
         self.assertEqual(mod.validate_manifest(candidate_manifest()), [])
@@ -156,6 +164,76 @@ class ReleaseLifecycleTests(unittest.TestCase):
         self.assertIn("tagged validation command missing", errors)
         self.assertIn("tagged validation report missing", errors)
         self.assertIn("tagged validation timestamp invalid", errors)
+
+    def test_candidate_skips_git_tag_validation(self):
+        def unexpected_reader(root: Path, args: tuple[str, ...]):
+            raise AssertionError(f"unexpected Git read: {root} {args}")
+
+        self.assertEqual(mod.validate_git_tag(Path("."), candidate_manifest(), unexpected_reader), [])
+
+    def test_actual_annotated_tag_matches_recorded_evidence(self):
+        manifest = published_manifest()
+        target = manifest["tag_target"]
+        reader = fake_git(
+            {
+                ("cat-file", "-t", "v1.0.0"): ("tag", None),
+                ("rev-parse", "v1.0.0"): ("3" * 40, None),
+                ("rev-parse", "v1.0.0^{}"): (target, None),
+            }
+        )
+        self.assertEqual(mod.validate_git_tag(Path("."), manifest, reader), [])
+
+    def test_missing_actual_tag_fails_closed(self):
+        manifest = published_manifest()
+        reader = fake_git(
+            {
+                ("cat-file", "-t", "v1.0.0"): (None, "fatal: Not a valid object name v1.0.0"),
+            }
+        )
+        errors = mod.validate_git_tag(Path("."), manifest, reader)
+        self.assertTrue(errors[0].startswith("Git release tag v1.0.0 could not be resolved:"))
+
+    def test_actual_lightweight_tag_is_rejected(self):
+        manifest = published_manifest()
+        target = manifest["tag_target"]
+        reader = fake_git(
+            {
+                ("cat-file", "-t", "v1.0.0"): ("commit", None),
+                ("rev-parse", "v1.0.0"): (target, None),
+                ("rev-parse", "v1.0.0^{}"): (target, None),
+            }
+        )
+        errors = mod.validate_git_tag(Path("."), manifest, reader)
+        self.assertIn("Git release tag v1.0.0 is not annotated", errors)
+        self.assertIn("Git tag object SHA differs from recorded evidence", errors)
+
+    def test_actual_tag_object_sha_mismatch_is_rejected(self):
+        manifest = published_manifest()
+        target = manifest["tag_target"]
+        reader = fake_git(
+            {
+                ("cat-file", "-t", "v1.0.0"): ("tag", None),
+                ("rev-parse", "v1.0.0"): ("4" * 40, None),
+                ("rev-parse", "v1.0.0^{}"): (target, None),
+            }
+        )
+        self.assertIn(
+            "Git tag object SHA differs from recorded evidence",
+            mod.validate_git_tag(Path("."), manifest, reader),
+        )
+
+    def test_actual_peeled_target_mismatch_is_rejected(self):
+        manifest = published_manifest()
+        reader = fake_git(
+            {
+                ("cat-file", "-t", "v1.0.0"): ("tag", None),
+                ("rev-parse", "v1.0.0"): ("3" * 40, None),
+                ("rev-parse", "v1.0.0^{}"): ("2" * 40, None),
+            }
+        )
+        errors = mod.validate_git_tag(Path("."), manifest, reader)
+        self.assertIn("Git peeled release commit differs from tag target", errors)
+        self.assertIn("Git peeled release commit differs from recorded evidence", errors)
 
     def test_published_manifest_passes(self):
         self.assertEqual(mod.validate_manifest(published_manifest()), [])
