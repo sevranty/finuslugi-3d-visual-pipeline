@@ -106,6 +106,18 @@ class PullRequestGovernanceTests(unittest.TestCase):
         errors = mod.validate_records(current, [current, duplicate], {})
         self.assertIn("parallel active implementation PRs for 3DP-027: #29", errors)
 
+    def test_conflicting_duplicate_canonical_issue_is_detected(self):
+        current = record(28, "3DP-027")
+        duplicate = mod.PullRequestRecord(
+            29,
+            "🔗 3DP#8 → conflicting PR",
+            body("3DP-008", 27),
+            "open",
+        )
+        self.assertEqual(mod.task_ids_from_record(duplicate), {"3DP-008", "3DP-027"})
+        errors = mod.validate_records(current, [current, duplicate], {})
+        self.assertIn("parallel active implementation PRs for 3DP-027: #29", errors)
+
     def test_different_task_pr_does_not_conflict(self):
         current = record(28, "3DP-027")
         other = record(29, "3DP-008")
