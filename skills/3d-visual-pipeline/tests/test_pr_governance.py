@@ -82,6 +82,17 @@ class PullRequestGovernanceTests(unittest.TestCase):
         errors = mod.validate_records(current, [current, duplicate], {})
         self.assertIn("parallel active implementation PRs for 3DP-027: #29", errors)
 
+    def test_canonical_issue_only_duplicate_is_detected(self):
+        current = record(28, "3DP-027")
+        duplicate = mod.PullRequestRecord(
+            29,
+            "PR without task title",
+            "- Canonical Issue: #27\n",
+            "open",
+        )
+        errors = mod.validate_records(current, [current, duplicate], {})
+        self.assertIn("parallel active implementation PRs for 3DP-027: #29", errors)
+
     def test_conflicting_duplicate_body_and_matching_title_is_detected(self):
         current = record(28, "3DP-027")
         duplicate = mod.PullRequestRecord(
