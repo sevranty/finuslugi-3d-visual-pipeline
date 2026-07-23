@@ -83,6 +83,9 @@ def task_ids_from_record(record: PullRequestRecord) -> set[str]:
     task_match = TASK_ID_RE.search(record.body)
     if task_match:
         task_ids.add(task_match.group(1))
+    issue_match = ISSUE_RE.search(record.body)
+    if issue_match:
+        task_ids.add(canonical_task_id(int(issue_match.group(1))))
     title_match = TITLE_TASK_RE.search(record.title)
     if title_match:
         task_ids.add(canonical_task_id(int(title_match.group(1))))
