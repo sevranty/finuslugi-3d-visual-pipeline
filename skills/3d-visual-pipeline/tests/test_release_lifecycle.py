@@ -176,30 +176,34 @@ class ReleaseLifecycleTests(unittest.TestCase):
         target = manifest["tag_target"]
         reader = fake_git(
             {
+                ("show-ref", "--verify", "--hash", "refs/tags/v1.0.0"): ("3" * 40, None),
                 ("cat-file", "-t", "refs/tags/v1.0.0"): ("tag", None),
-                ("rev-parse", "refs/tags/v1.0.0"): ("3" * 40, None),
                 ("rev-parse", "refs/tags/v1.0.0^{}"): (target, None),
             }
         )
         self.assertEqual(mod.validate_git_tag(Path("."), manifest, reader), [])
 
-    def test_missing_actual_tag_fails_closed(self):
+    def test_missing_actual_tag_is_optional_by_default_and_required_explicitly(self):
         manifest = published_manifest()
         reader = fake_git(
             {
-                ("cat-file", "-t", "refs/tags/v1.0.0"): (None, "fatal: Not a valid object name v1.0.0"),
+                ("show-ref", "--verify", "--hash", "refs/tags/v1.0.0"): (
+                    None,
+                    "fatal: 'refs/tags/v1.0.0' - not a valid ref",
+                ),
             }
         )
-        errors = mod.validate_git_tag(Path("."), manifest, reader)
-        self.assertTrue(errors[0].startswith("Git release tag v1.0.0 could not be resolved:"))
+        self.assertEqual(mod.validate_git_tag(Path("."), manifest, reader), [])
+        errors = mod.validate_git_tag(Path("."), manifest, reader, require_tag=True)
+        self.assertTrue(errors[0].startswith("Git release tag v1.0.0 is required but unavailable:"))
 
     def test_actual_lightweight_tag_is_rejected(self):
         manifest = published_manifest()
         target = manifest["tag_target"]
         reader = fake_git(
             {
+                ("show-ref", "--verify", "--hash", "refs/tags/v1.0.0"): (target, None),
                 ("cat-file", "-t", "refs/tags/v1.0.0"): ("commit", None),
-                ("rev-parse", "refs/tags/v1.0.0"): (target, None),
                 ("rev-parse", "refs/tags/v1.0.0^{}"): (target, None),
             }
         )
@@ -212,8 +216,8 @@ class ReleaseLifecycleTests(unittest.TestCase):
         target = manifest["tag_target"]
         reader = fake_git(
             {
+                ("show-ref", "--verify", "--hash", "refs/tags/v1.0.0"): ("4" * 40, None),
                 ("cat-file", "-t", "refs/tags/v1.0.0"): ("tag", None),
-                ("rev-parse", "refs/tags/v1.0.0"): ("4" * 40, None),
                 ("rev-parse", "refs/tags/v1.0.0^{}"): (target, None),
             }
         )
@@ -226,8 +230,8 @@ class ReleaseLifecycleTests(unittest.TestCase):
         manifest = published_manifest()
         reader = fake_git(
             {
+                ("show-ref", "--verify", "--hash", "refs/tags/v1.0.0"): ("3" * 40, None),
                 ("cat-file", "-t", "refs/tags/v1.0.0"): ("tag", None),
-                ("rev-parse", "refs/tags/v1.0.0"): ("3" * 40, None),
                 ("rev-parse", "refs/tags/v1.0.0^{}"): ("2" * 40, None),
             }
         )
